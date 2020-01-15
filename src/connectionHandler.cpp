@@ -66,11 +66,10 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 bool ConnectionHandler::getLine(std::string& line) {
     return getFrameAscii(line, '\n');
 }
-
+//TODO: send encdec
 bool ConnectionHandler::sendLine(std::string& line) {
     return sendFrameAscii(line, '\n');
 }
- 
 
 bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
