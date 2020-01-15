@@ -7,12 +7,16 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <vector>
 
 
 class fromServer {
 private:
     int _id;
     std::mutex & _mutex;
+    bool disconnected;
+
+
 public:
     fromServer (int id, std::mutex& mutex) : _id(id), _mutex(mutex) {}
 
@@ -22,4 +26,10 @@ public:
             std::cout << i << ") Task " << _id << " is working" << std::endl;
         }
     }
+
+    void operator()();
+
+    std::vector<std::string> split(std::string s, char delimiter);
+
+    std::vector<std::string> split(std::string s, std::string delimiter);
 };
