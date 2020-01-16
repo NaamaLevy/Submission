@@ -7,17 +7,18 @@
 #include <mutex>
 #include <thread>
 #include "connectionHandler.h"
+#include "ClientData.h"
 
 class fromKB {
 private:
-//    int _id;
-//    std::mutex &_mutex;
+    int _id;
+    mutex &_mutex;
     ConnectionHandler* connectionHandler;
-    int* isConnected;
+    int isConnected;
+    ClientData clientData;
 
 public:
-    fromKB(ConnectionHandler* connectionHundler, int* isConnected);
-            //int id, std::mutex &mutex) : _id(id), _mutex(mutex){};
+    fromKB(ConnectionHandler *ch, int isConnected, ClientData clientData, mutex &mutex);
 
     void run();
     void operator()();
@@ -26,6 +27,5 @@ public:
     std::vector<std::string> split(std::string s, std::string delimiter);
 
 
-
-
-}
+    void split(std::vector<std::string> &vector, std::string s, std::string delimiter);
+};

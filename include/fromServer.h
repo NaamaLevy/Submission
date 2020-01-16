@@ -8,28 +8,27 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include "ClientData.h"
+#include "connectionHandler.h"
 
+using namespace std;
 
 class fromServer {
 private:
     int _id;
-    std::mutex & _mutex;
+    mutex _mutex;
     bool disconnected;
-
+    ClientData* clientData;
+    ConnectionHandler* ch;
+    int isConnected;
 
 public:
-    fromServer (int id, std::mutex& mutex) : _id(id), _mutex(mutex) {}
+    fromServer(ConnectionHandler *ch, int isConnected, ClientData *clientData, mutex &mutex);
 
-    void run(){
-        for (int i= 0; i < 100; i++){
-            std::lock_guard<std::mutex> lock(_mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-            std::cout << i << ") Task " << _id << " is working" << std::endl;
-        }
-    }
+    void run();
 
     void operator()();
 
-    std::vector<std::string> split(std::string s, char delimiter);
 
-    std::vector<std::string> split(std::string s, std::string delimiter);
+    void split(std::vector<std::string> &vector, std::string s, std::string delimiter);
 };

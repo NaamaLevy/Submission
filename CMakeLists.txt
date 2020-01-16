@@ -8,4 +8,4 @@ include_directories(include)
 add_executable(Boost_Echo_Client
         include/connectionHandler.h
         src/connectionHandler.cpp
-        src/echoClient.cpp include/fromServer.h include/fromKB.h src/fromServer.cpp src/fromKB.cpp src/Client.cpp include/Client.h)
+        src/echoClient.cpp include/fromServer.h include/fromKB.h src/fromServer.cpp src/fromKB.cpp src/Client.cpp src/ClientData.cpp include/ClientData.h)

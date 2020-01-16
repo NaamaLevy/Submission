@@ -1,5 +1,5 @@
 #include <connectionHandler.h>
- 
+#include <vector>
 using boost::asio::ip::tcp;
 
 using std::cin;
@@ -64,7 +64,7 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 }
  
 bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
+    return getFrameAscii(line, '\0');
 }
 //TODO: send encdec
 bool ConnectionHandler::sendLine(std::string& line) {
