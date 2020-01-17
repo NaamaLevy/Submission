@@ -6,13 +6,14 @@
 using namespace std;
 
 int main() {
-    bool login = false;
-    const short bufsize = 1024;
-    char buf[bufsize];
-    cin.getline(buf, bufsize);
-    string line(buf);
     vector<string> words;
+    bool login = false;
     while (!login) {
+        const short bufsize = 1024;
+        char buf[bufsize];
+        cin.getline(buf, bufsize);
+        string line(buf);
+
         if (line.substr(0, 5).compare("login")) {
             bool wantedLogout = false;
             size_t pos = 0;
@@ -32,11 +33,14 @@ int main() {
     int endPos = words[1].find(":");
     string host = words[1].substr(0, endPos);
     string port = words[1].substr((endPos + 1));
+    //create ClientData with username and password
     ClientData clientData(words[2], words[3]);
+    //create Connection handler with user's host and port
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
     mutex mutex;
     fromKB fromKb(connectionHandler, -1, clientData, mutex);
+    fromServer fromserver((connectionHandler, -1, clientData, mutex);
     string frame = "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[2] + newLine +
 
 //

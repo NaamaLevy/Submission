@@ -8,6 +8,8 @@
 #include <thread>
 #include "connectionHandler.h"
 #include "ClientData.h"
+#include <string>
+using namespace std;
 
 class fromKB {
 private:
@@ -22,10 +24,6 @@ public:
 
     void run();
     void operator()();
-
-    fromKB &operator=(const fromKB &other);
-    std::vector<std::string> split(std::string s, std::string delimiter);
-
-
+    void send()
     void split(std::vector<std::string> &vector, std::string s, std::string delimiter);
 };
