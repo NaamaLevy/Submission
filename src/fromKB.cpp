@@ -17,7 +17,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
 
 
     void fromKB::operator()() {
-        while (1) {// we wants to read as long as there is a connection to the server
+        while (clientData->isConnected()) {// we wants to read as long as there is a connection to the server
             const short bufsize = 1024;
             char buf[bufsize];
             std::cin.getline(buf, bufsize);
@@ -26,7 +26,6 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             std::vector<std::string> words;
             split(words, line, " ");
             std::string newLine = "/n";
-
             if (words[0] == "join") {
                 int receiptid = clientData->getReceiptID();
                 int subid = clientData->getReceiptID();
@@ -51,13 +50,15 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
 
             }
             if (words[0] == "logout") {
-
+                ///action
+                clientData->setConnected(false);
             }
-             if(disconnected){
-                 break;
-             }
-            }
+//            if(disconnected){
+//                break;
+//            }
         }
+
+    }
 
 
     void fromKB::split(std::vector<std::string> &vector, std::string s, std::string delimiter) {
