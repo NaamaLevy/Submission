@@ -15,15 +15,15 @@ class fromKB {
 private:
     int _id;
     mutex &_mutex;
-    ConnectionHandler* connectionHandler;
+    ConnectionHandler* ch;
     int isConnected;
-    ClientData clientData;
+    ClientData* clientData;
 
 public:
-    fromKB(ConnectionHandler *ch, int isConnected, ClientData clientData, mutex &mutex);
+    fromKB(ConnectionHandler *ch, int isConnected, ClientData &clientData, mutex &mutex);
 
     void run();
     void operator()();
-    void send()
+    void send();
     void split(std::vector<std::string> &vector, std::string s, std::string delimiter);
 };

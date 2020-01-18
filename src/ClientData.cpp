@@ -1,8 +1,17 @@
 
 #include "ClientData.h"
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
 
-
-ClientData::ClientData(string userName, string password):userName(userName), password(password){}
+ClientData::ClientData(string userName, string password):userName(userName), password(password){
+    topicsID = map<string, int>();
+    inventory = map<map<string, bool>, string>();
+    wishList = vector<string>();
+    receipts = map <int, string>();
+    connected = false;
+}
 
 //map <string, int> topicsID; //map<genre, id>
 //map <map<string, bool>, string> inventory; //map<map<book, isAvailable>, owner>
@@ -14,6 +23,22 @@ ClientData::ClientData(string userName, string password):userName(userName), pas
 //string password;
 
 
-    int ClientData::getSubID() {
-        return loogedIn++;
-    }
+int ClientData::getSubID() {
+    return subID++;
+}
+void ClientData::addReceipt(int receiptID, string action){
+    receipts.insert({receiptID, action});
+
+}
+int ClientData::getReceiptID(){
+    return receiptID++;
+}
+void ClientData::setConnected(bool status) {
+    connected = status;
+}
+string ClientData::getAction(int receiptid){
+    return receipts.at(receiptid);
+}
+void ClientData:: setSub(int subid, string genre){
+    topicsID.insert({genre, subid});
+}

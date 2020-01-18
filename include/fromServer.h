@@ -23,7 +23,7 @@ private:
     int isConnected;
 
 public:
-    fromServer(ConnectionHandler *ch, int isConnected, ClientData *clientData, mutex &mutex);
+    fromServer(ConnectionHandler *ch, int isConnected, ClientData &clientData, mutex &mutex);
 
     void run();
 

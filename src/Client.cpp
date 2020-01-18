@@ -2,6 +2,7 @@
 #include <connectionHandler.h>
 #include <fromKB.h>
 #include <ClientData.h>
+#include <fromServer.h>
 
 using namespace std;
 
@@ -33,15 +34,24 @@ int main() {
     int endPos = words[1].find(":");
     string host = words[1].substr(0, endPos);
     string port = words[1].substr((endPos + 1));
+    string frame = "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[2] + newLine + + "passcode: " + words[3] + newLine+newLine+newLine + '\0';
     //create ClientData with username and password
     ClientData clientData(words[2], words[3]);
     //create Connection handler with user's host and port
-    ConnectionHandler connectionHandler(host, short(stoi(port)));
+    ConnectionHandler *connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
     mutex mutex;
     fromKB fromKb(connectionHandler, -1, clientData, mutex);
     fromServer fromserver((connectionHandler, -1, clientData, mutex);
-    string frame = "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[2] + newLine +
+    if (connectionHandler->sendLine(&frame)){
+        clientData.addReceipt(clientData.getReceiptID(), )
+        thread th1(fromKb::run, &fromKb);
+        thread th2(fromserver::run, &fromserver);
+        th1.join();
+        th2.join();
+    }
+
+
 
 //
 //        int *isConnected = new int(0);
@@ -71,5 +81,5 @@ int main() {
 
 
 
-
+    return 0;
 }

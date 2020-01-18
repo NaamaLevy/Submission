@@ -9,13 +9,11 @@
 using namespace std;
 
 
-fromKB::fromKB(ConnectionHandler* ch, int isConnected, ClientData clientData, mutex &mutex):
+fromKB::fromKB(ConnectionHandler* ch, int isConnected, ClientData &clientData, mutex &mutex):
         connectionHandler(ch),
         isConnected(isConnected),
-        clientData(clientData), _mutex(mutex){
+        clientData(&clientData), _mutex(mutex){
 }
-
-
 
 
     void fromKB::operator()() {
@@ -28,13 +26,14 @@ fromKB::fromKB(ConnectionHandler* ch, int isConnected, ClientData clientData, mu
             std::vector<std::string> words;
             split(words, line, " ");
             std::string newLine = "/n";
-            if (words[0] == "login") {
-                int pos = words[1].find(":");
-                std::string host = words[1].substr(0,pos);
-                std::string frame = "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[2] + newLine + "passcode: " + words[3] + newLine+newLine+newLine + '\u0000';
-            }
-            if (words[0] == "join") {
 
+            if (words[0] == "join") {
+                int receiptid = clientData->getReceiptID();
+                int subid = clientData->getReceiptID();
+                string action = to_string(subid) +" " + "join" + " " + words[1];
+                string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt: " + to_string(receiptid) + newLine+newLine+newLine + '\0';
+                clientData->addReceipt(receiptid, action);
+                ch->sendLine(frame);
             }
             if (words[0] == "exit") {
 
