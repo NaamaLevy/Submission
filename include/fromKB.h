@@ -26,4 +26,5 @@ public:
     void operator()();
     void send();
     void split(std::vector<std::string> &vector, std::string s, std::string delimiter);
+
 };

@@ -7,14 +7,14 @@ using namespace std;
 
 ClientData::ClientData(string userName, string password):userName(userName), password(password){
     topicsID = map<string, int>();
-    inventory = map<map<string, bool>, string>();
+    inventory = map <string, map<pair<string, bool>, string>>();
     wishList = vector<string>();
     receipts = map <int, string>();
     connected = false;
 }
 
 //map <string, int> topicsID; //map<genre, id>
-//map <map<string, bool>, string> inventory; //map<map<book, isAvailable>, owner>
+//map <string, map<pair<string, bool>, string>> inventory;
 //vector<string> wishList; //map<book i want>
 //map <int, string> receipts; //map<receipt id, action> //map an action to act when getting a receipt with this id.
 //atomic<int> subID; //produces unique id for every sub' genre
@@ -41,9 +41,18 @@ string ClientData::getAction(int receiptid){
 }
 void ClientData:: setSub(int subid, string genre){
     topicsID.insert({genre, subid});
+    inventory.emplace(genre, map<pair<string, bool>,string>());
 }
 
 bool ClientData::isConnected() {
     return connected;
+}
+
+void ClientData::addBook(string genre, string book, string owner) {
+    inventory.at(genre).emplace(make_pair(book,true), owner);
+}
+
+string ClientData::getName() {
+    return userName;
 }
 

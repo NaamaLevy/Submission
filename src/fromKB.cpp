@@ -38,7 +38,9 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
 
             }
             if (words[0] == "add") {
-
+                string genre = words[1];
+                string book = words[2];
+                clientData->addBook(genre,book,clientData->getName());
             }
             if (words[0] == "borrow") {
 
@@ -72,12 +74,13 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
         vector.push_back(s);
     }
 
+
     void run() {
-        for (int i = 0; i < 100; i++) {
-            std::lock_guard<std::mutex>
-            lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-            std::cout << i << ") Task " << _id << " is working" << std::endl;
-        }
+            for (int i = 0; i < 100; i++) {
+                std::lock_guard<std::mutex>
+                lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
+                std::cout << i << ") Task " << _id << " is working" << std::endl;
+            }
     }
 
 
