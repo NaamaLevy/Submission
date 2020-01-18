@@ -8,20 +8,19 @@ using namespace std;
 ClientData::ClientData(string userName, string password):userName(userName), password(password){
     topicsID = map<string, int>();
     inventory = map <string, map<pair<string, bool>, string>>();
-    wishList = vector<string>();
+    wishList = map<string,vector<string>>();
     receipts = map <int, string>();
     connected = false;
 }
-
 //map <string, int> topicsID; //map<genre, id>
-//map <string, map<pair<string, bool>, string>> inventory;
-//vector<string> wishList; //map<book i want>
+//map <string, map<pair<string, bool>, string>> inventory; //map<genre, map<<book, isAvailable>, owner>
+//map<string,vector<string>> wishList; //map<genre, vector<book i want>>
 //map <int, string> receipts; //map<receipt id, action> //map an action to act when getting a receipt with this id.
-//atomic<int> subID; //produces unique id for every sub' genre
-//bool loogedIn;
+//atomic_int subID; //produces unique id for every sub' genre
+//bool connected;
 //string userName;
 //string password;
-
+//atomic_int receiptID;
 
 int ClientData::getSubID() {
     return subID++;
@@ -56,8 +55,10 @@ string ClientData::getName() {
     return userName;
 }
 
-void ClientData::addToWL(string book) {
-    wishList.push_back(book);
+void ClientData::addToWL(string genre, string book) {
+    if (wishList.count(genre) == 0)
+        wishList.emplace(genre, vector<string>());
+    wishList.at(genre).push_back(book);
 }
 
 map<string, map<pair<string, bool>, string>> ClientData::getInventory() {
@@ -72,5 +73,17 @@ void ClientData::removeBook(string genre, string book) {
 int ClientData::getGenreSubID(string genre) {
     return topicsID.at(genre);
 }
+
+void ClientData::exitClub(string genre) {
+    //remove genre and its books from the WL
+    wishList.at(genre).clear();
+    wishList.erase(genre);
+    //remove genre and its books from the inventory
+    inventory.at(genre).clear();
+    inventory.erase(genre);
+    //remove genre and its subID from topicsID
+    topicsID.erase(genre);
+}
+
 
 

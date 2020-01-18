@@ -6,6 +6,7 @@
 #include <thread>
 #include <string>
 #include <ClientData.h>
+
 using namespace std;
 
 fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex):
@@ -31,14 +32,20 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                     if (words[0] == "ERROR") {
                     }
                     if (words[0] == "RECEIPT") {
-                        int receiptid = stoi(words[1]); //add the same algorithm as in the server side.
+                        int receiptid = stoi(words[1]); //add the same split algorithm as in the server side.
                         string action = clientData->getAction(receiptid);
                         vector<string> act;
                         split(act, action, " ");
                         if (act[1].compare("join")){
                             clientData->setSub(stoi(act[0]), act[2]);
                         }
-
+                        else if (act[0].compare("Exited")){
+                            string genre = act[1];
+                            //delete genre from all the DBs
+                            clientData->exitClub(genre);
+                            //print the required message on the client screen
+                            cout << "Exited club" + genre << endl;
+                        }
                     }
                     if (words[0] == "MESSAGE") {
 

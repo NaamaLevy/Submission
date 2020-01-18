@@ -63,7 +63,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 string frame = "SEND" + newLine + "destination: " + genre + newLine + name + " wish to borrow " + book + newLine+newLine+newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
                 if(ch->sendLine(frame)) {
-                    clientData->addToWL(book);
+                    clientData->addToWL(genre,book);
                 }
             }
             if (words[0] == "return") {
@@ -86,7 +86,6 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 ch->sendLine(frame);
             }
             if (words[0] == "logout") {
-                ///action
                 int receiptid = clientData->getReceiptID();
                 string frame = "DISCONNECT" + newLine + "receipt: " + to_string(receiptid )+  newLine+newLine+newLine + '\0';
                 if (ch->sendLine(frame)){

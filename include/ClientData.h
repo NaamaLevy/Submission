@@ -22,7 +22,7 @@ public:
 private:
     map <string, int> topicsID; //map<genre, id>
     map <string, map<pair<string, bool>, string>> inventory; //map<genre, map<<book, isAvailable>, owner>
-    vector<string> wishList; //map<book i want>
+    map<string,vector<string>> wishList; //map<genre, vector<book i want>>
     map <int, string> receipts; //map<receipt id, action> //map an action to act when getting a receipt with this id.
     atomic_int subID; //produces unique id for every sub' genre
     bool connected;
@@ -39,10 +39,11 @@ public:
    bool isConnected();
    void addBook(string genre, string book, string owner);
    string getName();
-   void addToWL(string book);
+   void addToWL(string genre, string book);
    map <string, map<pair<string, bool>, string>> getInventory();
    void removeBook(string genre, string book);
    int getGenreSubID( string genre);
+   void exitClub(string genre);
 };
 
 
