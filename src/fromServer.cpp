@@ -19,29 +19,51 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
             while (isConnected) {// we wants to read as long as there is a connection to the server
                 const short bufsize = 1024;
                 char buf[bufsize];
-                std::cin.getline(buf, bufsize);
-                std::string line(buf);
-                bool wantedLogout= false;
-                std::vector<std::string> words;
-                split(words, line, " ");
+                cin.getline(buf, bufsize);
+                string line(buf);
+                std::vector<std::string> lines;
+                split(lines, line, " ");
+                //get command
+                string command = lines[0];
+                // get headers
+                bool head = true;
+                int i = 1;
+                map<string, string> headers;
+                string body;
+                while (i<lines.size()-1){
+                    while(head){
+
+                        string header;
+                        header = lines[i];
+                        if (header.compare(""))
+                            head = false;
+                        int index = header.find(":");
+                        string key = header.substr(0, index);
+                        string value = header.substr(index + 1, header.length());
+                        headers.insert(key, value);
+                        i++;
+                    }
+                    //get body
+                    if (!lines[i+1].compare(""))
+                        body = lines[i+1];
+                }
                 std::string newLine = "/n";
                 while (isConnected & !clientData->isConnected()){
-                    if (words[0] == "CONNECTED") {
+                    if (command == "CONNECTED") {
                         clientData->setConnected(true);
                      }
-                    if (words[0] == "ERROR") {
+                    if (command == "ERROR") {
                         //extract a message to print on the client's screen
-                        string message = words[4];
-                        message = message.substr(9,message.size()-1);
+                        string message = headers.at("message");
                         //print message
                         cout << message<< endl;
                     }
                 }
                 while(clientData->isConnected()){
-                    if (words[0] == "ERROR") {
-                    }
-                    if (words[0] == "RECEIPT") {
-                        int receiptid = stoi(words[1]); //add the same split algorithm as in the server side.
+//                    if (command == "ERROR") {
+//                    }
+                    if (command == "RECEIPT") {
+                        int receiptid = stoi(headers.at("receipt-id")); //add the same split algorithm as in the server side.
                         string action = clientData->getAction(receiptid);
                         vector<string> act;
                         split(act, action, " ");
@@ -64,7 +86,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                             isConnected = false;
                         }
                     }
-                    if (words[0] == "MESSAGE") {
+                    if (command == "MESSAGE") {
 
                     }
                 }

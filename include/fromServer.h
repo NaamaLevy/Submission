@@ -16,7 +16,7 @@ using namespace std;
 class fromServer {
 private:
     int _id;
-    mutex _mutex;
+    mutex &_mutex;
     bool disconnected;
     ClientData* clientData;
     ConnectionHandler& ch;
