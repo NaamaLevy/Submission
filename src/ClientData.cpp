@@ -42,3 +42,8 @@ string ClientData::getAction(int receiptid){
 void ClientData:: setSub(int subid, string genre){
     topicsID.insert({genre, subid});
 }
+
+bool ClientData::isConnected() {
+    return connected;
+}
+

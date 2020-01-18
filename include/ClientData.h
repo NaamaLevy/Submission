@@ -37,6 +37,7 @@ public:
    void setConnected(bool status);
    string getAction(int receiptid);
    void setSub(int subid, string genre);
+   bool isConnected();
 };
 
 

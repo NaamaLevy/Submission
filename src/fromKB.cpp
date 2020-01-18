@@ -9,7 +9,7 @@
 using namespace std;
 
 
-fromKB::fromKB(ConnectionHandler* ch, int isConnected, ClientData &clientData, mutex &mutex):
+fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex):
         connectionHandler(ch),
         isConnected(isConnected),
         clientData(&clientData), _mutex(mutex){
@@ -69,6 +69,14 @@ fromKB::fromKB(ConnectionHandler* ch, int isConnected, ClientData &clientData, m
             s.erase(0, pos + delimiter.length());
         }
         vector.push_back(s);
+    }
+
+    void run() {
+        for (int i = 0; i < 100; i++) {
+            std::lock_guard<std::mutex>
+            lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
+            std::cout << i << ") Task " << _id << " is working" << std::endl;
+        }
     }
 
 

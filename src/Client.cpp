@@ -39,14 +39,14 @@ int main() {
     ClientData clientData(words[2], words[3]);
     //create Connection handler with user's host and port
     ConnectionHandler *connectionHandler(host, short(stoi(port)));
-    connectionHandler.connect();
+    connectionHandler->connect();
     mutex mutex;
     fromKB fromKb(connectionHandler, -1, clientData, mutex);
     fromServer fromserver((connectionHandler, -1, clientData, mutex);
     if (connectionHandler->sendLine(&frame)){
         clientData.addReceipt(clientData.getReceiptID(), )
-        thread th1(fromKb::run, &fromKb);
-        thread th2(fromserver::run, &fromserver);
+        thread th1(fromKb.run(), &fromKb);
+        thread th2(fromserver.run(), &fromserver);
         th1.join();
         th2.join();
     }

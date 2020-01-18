@@ -8,7 +8,7 @@
 #include <ClientData.h>
 using namespace std;
 
-fromServer::fromServer(ConnectionHandler* ch, int isConnected, ClientData &clientData, mutex &mutex):
+fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex):
         connectionHandler(ch),
         isConnected(isConnected),
         clientData(&clientData), _mutex(mutex){
@@ -21,29 +21,29 @@ fromServer::fromServer(ConnectionHandler* ch, int isConnected, ClientData &clien
                 std::cin.getline(buf, bufsize);
                 std::string line(buf);
                 bool wantedLogout= false;
-                std::vector<std::string> words = split(line, '\n');
+                std::vector<std::string> words;
+                split(words, line, " ");
+                std::string newLine = "/n";
                 if (words[0] == "CONNECTED") {
                     clientData->setConnected(true);
                 }
-                if (words[0] == "ERROR") {
-
-
-                }
-                if (words[0] == "RECEIPT") {
-                    int receiptid = stoi(words[1]); //add the same algorithm as in the server side.
-                    string action = clientData->getAction(receiptid);
-                    vector<string> act;
-                    split(act, action, " ");
-                    if (act[1].compare("join")){
-                        clientData->setSub(stoi(act[0]), act[2]);
+                while(clientData->isConnected()){
+                    if (words[0] == "ERROR") {
                     }
+                    if (words[0] == "RECEIPT") {
+                        int receiptid = stoi(words[1]); //add the same algorithm as in the server side.
+                        string action = clientData->getAction(receiptid);
+                        vector<string> act;
+                        split(act, action, " ");
+                        if (act[1].compare("join")){
+                            clientData->setSub(stoi(act[0]), act[2]);
+                        }
 
+                    }
+                    if (words[0] == "MESSAGE") {
+
+                    }
                 }
-                if (words[0] == "MESSAGE") {
-
-                }
-
-
                 if (disconnected){
                     break;
                 }

@@ -20,7 +20,7 @@ private:
     ClientData* clientData;
 
 public:
-    fromKB(ConnectionHandler *ch, int isConnected, ClientData &clientData, mutex &mutex);
+    fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex);
 
     void run();
     void operator()();

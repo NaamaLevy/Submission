@@ -19,11 +19,11 @@ private:
     mutex _mutex;
     bool disconnected;
     ClientData* clientData;
-    ConnectionHandler* ch;
+    ConnectionHandler& ch;
     int isConnected;
 
 public:
-    fromServer(ConnectionHandler *ch, int isConnected, ClientData &clientData, mutex &mutex);
+    fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex);
 
     void run();
 
