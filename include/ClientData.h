@@ -39,6 +39,7 @@ public:
    bool isConnected();
    void addBook(string genre, string book, string owner);
    string getName();
+   void addToWL(string book);
 };
 
 

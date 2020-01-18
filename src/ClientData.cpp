@@ -56,3 +56,7 @@ string ClientData::getName() {
     return userName;
 }
 
+void ClientData::addToWL(string book) {
+    wishList.push_back(book);
+}
+

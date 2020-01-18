@@ -34,7 +34,7 @@ int main() {
     int endPos = words[1].find(":");
     string host = words[1].substr(0, endPos);
     string port = words[1].substr((endPos + 1));
-    string frame = "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[2] + newLine + + "passcode: " + words[3] + newLine+newLine+newLine + '\0';
+    string frame = "CONNECT" + newLine + "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[2] + newLine + + "passcode: " + words[3] + newLine+newLine+newLine + '\0';
     //create ClientData with username and password
     ClientData clientData(words[2], words[3]);
     //create Connection handler with user's host and port
