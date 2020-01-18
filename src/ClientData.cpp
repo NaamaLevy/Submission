@@ -90,7 +90,9 @@ bool ClientData::checkBook(string genre, string book) {
 }
 
 void ClientData::lendBook(string genre, string book) {
-    inventory.at(genre).
+    string owner = inventory.at(genre).at(make_pair(book, true));
+   inventory.at(genre).erase(make_pair(book, true));
+    inventory.at(genre).emplace(make_pair(book, false), owner);
 }
 
 ClientData::~ClientData() = default;

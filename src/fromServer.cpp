@@ -89,9 +89,16 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                     if (command == "MESSAGE") {
                         vector<string> message;
                         split(message, body, " ");
+                        //borrow wish message
                         if (message[3].compare("borrow")){
+                            string genre = headers.at("destination");
                             if (!clientData->getName().compare(message[0])){
-
+                                if(clientData->checkBook(genre, message[4])) {
+                                    string frame = "SEND" + newLine + "destination:" + genre + newLine +
+                                                   clientData->getName() + " has " + message[4] + newLine + newLine +
+                                                   newLine + '\0';
+                                    (ch.sendLine(frame));
+                                }
                             }
                         }
                     }
