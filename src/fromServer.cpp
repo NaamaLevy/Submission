@@ -87,7 +87,13 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         }
                     }
                     if (command == "MESSAGE") {
+                        vector<string> message;
+                        split(message, body, " ");
+                        if (message[3].compare("borrow")){
+                            if (!clientData->getName().compare(message[0])){
 
+                            }
+                        }
                     }
                 }
             }

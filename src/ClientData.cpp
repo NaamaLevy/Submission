@@ -85,6 +85,14 @@ void ClientData::exitClub(string genre) {
     topicsID.erase(genre);
 }
 
+bool ClientData::checkBook(string genre, string book) {
+    return (inventory.at(genre).count(make_pair(book,true)));
+}
+
+void ClientData::lendBook(string genre, string book) {
+    inventory.at(genre).
+}
+
 ClientData::~ClientData() = default;
 
 

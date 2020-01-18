@@ -44,6 +44,8 @@ public:
    void removeBook(string genre, string book);
    int getGenreSubID( string genre);
    void exitClub(string genre);
+   bool checkBook(string genre, string book);
+   void lendBook(string genre, string book);
 };
 
 
