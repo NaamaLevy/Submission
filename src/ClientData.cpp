@@ -85,5 +85,6 @@ void ClientData::exitClub(string genre) {
     topicsID.erase(genre);
 }
 
+ClientData::~ClientData() = default;
 
 

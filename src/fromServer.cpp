@@ -16,7 +16,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
 }
 
     void fromServer::operator()() {
-            while (1) {// we wants to read as long as there is a connection to the server
+            while (isConnected) {// we wants to read as long as there is a connection to the server
                 const short bufsize = 1024;
                 char buf[bufsize];
                 std::cin.getline(buf, bufsize);
@@ -25,8 +25,17 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                 std::vector<std::string> words;
                 split(words, line, " ");
                 std::string newLine = "/n";
-                if (words[0] == "CONNECTED") {
-                    clientData->setConnected(true);
+                while (isConnected & !clientData->isConnected()){
+                    if (words[0] == "CONNECTED") {
+                        clientData->setConnected(true);
+                     }
+                    if (words[0] == "ERROR") {
+                        //extract a message to print on the client's screen
+                        string message = words[4];
+                        message = message.substr(9,message.size()-1);
+                        //print message
+                        cout << message<< endl;
+                    }
                 }
                 while(clientData->isConnected()){
                     if (words[0] == "ERROR") {
@@ -37,22 +46,27 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         vector<string> act;
                         split(act, action, " ");
                         if (act[1].compare("join")){
-                            clientData->setSub(stoi(act[0]), act[2]);
-                        }
-                        else if (act[0].compare("Exited")){
+                            string genre = act[2];
+                            //add genre to ClientData - topicsID and inventory
+                            clientData->setSub(stoi(act[0]), genre);
+                            //print the required message on the client screen
+                            cout << "Joined club " + genre << endl;
+                        } else if (act[0].compare("Exited")){
                             string genre = act[1];
                             //delete genre from all the DBs
                             clientData->exitClub(genre);
                             //print the required message on the client screen
-                            cout << "Exited club" + genre << endl;
+                            cout << "Exited club " + genre << endl;
+                        } else if (act[0].compare("disconnect")){
+                            //delete client's data
+                            delete(clientData);
+                            //change connected to exit the loop and stop getting Server commands
+                            isConnected = false;
                         }
                     }
                     if (words[0] == "MESSAGE") {
 
                     }
-                }
-                if (disconnected){
-                    break;
                 }
             }
     }

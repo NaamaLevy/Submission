@@ -95,11 +95,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                     clientData->setConnected(false);
                 }
             }
-//            if(disconnected){
-//                break;
-//            }
         }
-
     }
 
 
