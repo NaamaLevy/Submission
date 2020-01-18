@@ -42,6 +42,7 @@ public:
    void addToWL(string book);
    map <string, map<pair<string, bool>, string>> getInventory();
    void removeBook(string genre, string book);
+   int getGenreSubID( string genre);
 };
 
 

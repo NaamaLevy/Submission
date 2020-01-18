@@ -69,4 +69,8 @@ void ClientData::removeBook(string genre, string book) {
 
 }
 
+int ClientData::getGenreSubID(string genre) {
+    return topicsID.at(genre);
+}
+
 

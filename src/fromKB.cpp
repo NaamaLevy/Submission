@@ -24,7 +24,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             std::string line(buf);
             bool wantedLogout= false;
             std::vector<std::string> words;
-            split(words, line, " ");
+            split(words, line, " "); //TODO: implement split like the one in the server
             std::string newLine = "/n";
             if (words[0] == "join") {
                 int receiptid = clientData->getReceiptID();
@@ -36,6 +36,12 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 }
             }
             if (words[0] == "exit") {
+                string genre = words[1];
+                int subID = clientData->getGenreSubID(genre);
+                string frame = "UNSUBSCRIBE" + newLine + "id:" + to_string(subID) + newLine+newLine+newLine + '\0';
+                if(ch->sendLine(frame)){
+                    clientData->addReceipt(clientData->getReceiptID(), "Exited " + genre);
+                }
 
             }
             if (words[0] == "add") {
@@ -81,7 +87,14 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             }
             if (words[0] == "logout") {
                 ///action
-                clientData->setConnected(false);
+                int receiptid = clientData->getReceiptID();
+                string frame = "DISCONNECT" + newLine + "receipt: " + to_string(receiptid )+  newLine+newLine+newLine + '\0';
+                if (ch->sendLine(frame)){
+                    //add receiptID and action to act when getting a receipt with this id.
+                    clientData->addReceipt(receiptid, "disconnect");
+                    //update client's connection status for stop getting KB commands
+                    clientData->setConnected(false);
+                }
             }
 //            if(disconnected){
 //                break;
