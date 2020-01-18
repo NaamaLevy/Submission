@@ -43,8 +43,7 @@ int main() {
     mutex mutex;
     fromKB fromKb(connectionHandler, -1, clientData, mutex);
     fromServer fromserver((connectionHandler, -1, clientData, mutex);
-    if (connectionHandler->sendLine(&frame)){
-        clientData.addReceipt(clientData.getReceiptID(), )
+    if (connectionHandler->sendLine(frame)){
         thread th1(fromKb.run(), &fromKb);
         thread th2(fromserver.run(), &fromserver);
         th1.join();
