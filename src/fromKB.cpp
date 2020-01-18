@@ -61,7 +61,15 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 }
             }
             if (words[0] == "return") {
-
+                string genre = words[1];
+                string book = words[2];
+                string name = clientData->getName();
+                string owner = clientData->getInventory().at(genre).at({book, true});
+                //create SEND frame
+                string frame = "SEND" + newLine + "destination: " + genre + newLine + "Returning " + book + " to" + "owner" + newLine+newLine+newLine + '\0';
+                //if succeed to send the frame, add the book to user's inventory
+                if(ch->sendLine(frame)) {
+                    clientData->removeBook(genre,book);
             }
             if (words[0] == "status") {
 

@@ -60,3 +60,13 @@ void ClientData::addToWL(string book) {
     wishList.push_back(book);
 }
 
+map<string, map<pair<string, bool>, string>> ClientData::getInventory() {
+    return inventory;
+}
+
+void ClientData::removeBook(string genre, string book) {
+    inventory.at(genre).erase(make_pair(book, true));
+
+}
+
+

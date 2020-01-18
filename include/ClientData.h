@@ -40,6 +40,8 @@ public:
    void addBook(string genre, string book, string owner);
    string getName();
    void addToWL(string book);
+   map <string, map<pair<string, bool>, string>> getInventory();
+   void removeBook(string genre, string book);
 };
 
 
