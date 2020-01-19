@@ -24,7 +24,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             std::string line(buf);
             bool wantedLogout= false;
             std::vector<std::string> words;
-            split(words, line, " "); //TODO: implement split like the one in the server
+            split(words, line, " ");
             std::string newLine = "/n";
             if (words[0] == "join") {
                 int receiptid = clientData->getReceiptID();
@@ -38,7 +38,9 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             if (words[0] == "exit") {
                 string genre = words[1];
                 int subID = clientData->getGenreSubID(genre);
+                //create SUBSCRIBE frame
                 string frame = "UNSUBSCRIBE" + newLine + "id:" + to_string(subID) + newLine+newLine+newLine + '\0';
+                //if succeed to send the frame, add an action for getting SUBSCRIBED frame from the server
                 if(ch.sendLine(frame)){
                     clientData->addReceipt(clientData->getReceiptID(), "Exited " + genre);
                 }
@@ -111,13 +113,13 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
     }
 
 
-    void run() {
-            for (int i = 0; i < 100; i++) {
-                std::lock_guard<std::mutex>
-                lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-                std::cout << i << ") Task " << /*_id << */" is working" << std::endl;
-            }
-    }
+//    void run() {
+//            for (int i = 0; i < 100; i++) {
+//                std::lock_guard<std::mutex>
+//                lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
+//                std::cout << i << ") Task " << /*_id << */" is working" << std::endl;
+//            }
+//    }
 
 
 

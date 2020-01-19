@@ -147,13 +147,13 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                 }
             }
     }
-    void run() {
-        for (int i = 0; i < 100; i++) {
-            std::lock_guard<std::mutex>
-            lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-            std::cout << i << ") Task " <</* _id << */" is working" << std::endl;
-        }
-    }
+//    void run() {
+//        for (int i = 0; i < 100; i++) {
+//            std::lock_guard<std::mutex>
+//            lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
+//            std::cout << i << ") Task " <</* _id << */" is working" << std::endl;
+//        }
+//    }
 
     void fromServer::split(std::vector<std::string> &vector, std::string s, std::string delimiter) {
     size_t pos = 0;
