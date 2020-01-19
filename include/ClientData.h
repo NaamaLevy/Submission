@@ -47,7 +47,10 @@ public:
    bool checkBookInventory(string genre, string book);
    void lendBook(string genre, string book);
    bool checkBookWL(string genre, string book);
-    void removeBookWL(string genre, string book);
+   void removeBookWL(string genre, string book);
+   string getOwner(string genre, string book);
+   void returnBooktoMe(string genre, string book);
+   string genreStatus(string genre);
 };
 
 

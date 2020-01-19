@@ -68,8 +68,9 @@ map<string, map<pair<string, bool>, string>> ClientData::getInventory() {
 
 void ClientData::removeBookInventory(string genre, string book) {
     inventory.at(genre).erase(make_pair(book, true));
-
+    inventory.at(genre).erase(make_pair(book, false));
 }
+
 
 int ClientData::getGenreSubID(string genre) {
     return topicsID.at(genre);
@@ -104,6 +105,36 @@ void ClientData::removeBookWL(string genre, string book) {
     vector<string> genreBooks = wishList.at(genre);
    genreBooks.erase(remove(genreBooks.begin(),genreBooks.end(), book), genreBooks.end());
 }
+
+string ClientData::getOwner(string genre, string book) {
+    return (inventory.at(genre).at(make_pair(book,false)));
+}
+
+void ClientData::returnBooktoMe(string genre, string book) {
+    inventory.at(genre).erase(make_pair(book, false));
+    inventory.at(genre).emplace(make_pair(book, true), userName);
+}
+
+string ClientData::genreStatus(string genre) {
+    string books = userName+ ":";
+    vector<pair<string, bool>> v;
+    map<pair<string, bool>, string> genreMap = inventory.at(genre);
+    for(map<pair<string, bool>, string>::iterator it = genreMap.begin(); it != genreMap.end(); ++it) {
+        v.push_back(it->first);
+        for (pair<string, bool> book : v ){
+            if (book.second)
+                books = books+book.first;
+        }
+    }
+    return books;
+}
+
+
+
+map<int, int> m;
+vector<int> v;
+for(map<int,int>::iterator it = m.begin(); it != m.end(); ++it) {
+v.push_back(it->first);
 
 
 ClientData::~ClientData() = default;

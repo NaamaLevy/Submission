@@ -93,7 +93,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         if (message[3]==("borrow")){
                             if (clientData->getName()!=(message[0])){
                                 if(clientData->checkBookInventory(genre, message[4])) {
-                                    string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine+
+                                    string frame = "SEND" + newLine + "destination:" + genre  + newLine+
                                                    clientData->getName() + " has " + message[4] + newLine + newLine +
                                                    newLine + '\0';
                                     (ch.sendLine(frame));
@@ -111,7 +111,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                             //check if this book is in my WL
                             else{
                                 if (clientData->checkBookWL(genre, book)){
-                                    string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine +
+                                    string frame = "SEND" + newLine + "destination:" + genre + newLine +
                                                    "Taking " +book+ " from " + owner + newLine + newLine +
                                                    newLine + '\0';
                                     if(ch.sendLine(frame)){
@@ -120,6 +120,28 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                                     }
                                 }
                             }
+                        }
+                        //someone is returning a book
+                        else if (message[0]=="Returning"){
+                            string book = message[1];
+                            string lender = message[3];
+                            if(lender == clientData->getName()){
+                                string owner = clientData->getOwner(genre,book);
+                                if (owner == clientData->getName()){
+                                    clientData->returnBooktoMe(genre,book);
+                                } else{
+                                    string frame = "SEND" + newLine + "destination:" + genre + newLine + "Returning " + book + " to" + "owner" + newLine+newLine+newLine + '\0';
+                                    //if succeed to send the frame, add the book to user's inventory
+                                    if(ch.sendLine(frame)) {
+                                        clientData->removeBookInventory(genre, book);
+                                    }
+                                }
+                            }
+                        }
+                        else if (message[1] == "status"){
+                            string status = clientData->genreStatus(genre);
+                            string frame = "SEND" + newLine + "destination:" + genre + newLine + status + newLine+newLine+newLine + '\0';
+                            ch.sendLine(frame);
                         }
                     }
                 }
