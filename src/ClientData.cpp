@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 using namespace std;
 
 ClientData::ClientData(string userName, string password):userName(userName), password(password){
@@ -65,7 +66,7 @@ map<string, map<pair<string, bool>, string>> ClientData::getInventory() {
     return inventory;
 }
 
-void ClientData::removeBook(string genre, string book) {
+void ClientData::removeBookInventory(string genre, string book) {
     inventory.at(genre).erase(make_pair(book, true));
 
 }
@@ -85,8 +86,8 @@ void ClientData::exitClub(string genre) {
     topicsID.erase(genre);
 }
 
-bool ClientData::checkBook(string genre, string book) {
-    return (inventory.at(genre).count(make_pair(book,true)));
+bool ClientData::checkBookInventory(string genre, string book) {
+    return (inventory.at(genre).count(make_pair(book,true))==1);
 }
 
 void ClientData::lendBook(string genre, string book) {
@@ -94,6 +95,16 @@ void ClientData::lendBook(string genre, string book) {
    inventory.at(genre).erase(make_pair(book, true));
     inventory.at(genre).emplace(make_pair(book, false), owner);
 }
+
+bool ClientData::checkBookWL(string genre, string book) {
+    return(find(wishList.at(genre).begin(), wishList.at(genre).end(), book) == wishList.at(genre).end());
+}
+
+void ClientData::removeBookWL(string genre, string book) {
+    vector<string> genreBooks = wishList.at(genre);
+   genreBooks.erase(remove(genreBooks.begin(),genreBooks.end(), book), genreBooks.end());
+}
+
 
 ClientData::~ClientData() = default;
 

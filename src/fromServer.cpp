@@ -39,7 +39,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         int index = header.find(":");
                         string key = header.substr(0, index);
                         string value = header.substr(index + 1, header.length());
-                        headers.insert(key, value);
+                        headers.emplace(key, value);
                         i++;
                     }
                     //gets body
@@ -86,17 +86,38 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         }
                     }
                     if (command == "MESSAGE") {
+                        string genre = headers.at("destination");
                         vector<string> message;
                         split(message, body, " ");
                         //borrow wish message
                         if (message[3]==("borrow")){
-                            string genre = headers.at("destination");
                             if (clientData->getName()!=(message[0])){
-                                if(clientData->checkBook(genre, message[4])) {
-                                    string frame = "SEND" + newLine + "destination:" + genre + newLine +
+                                if(clientData->checkBookInventory(genre, message[4])) {
+                                    string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine+
                                                    clientData->getName() + " has " + message[4] + newLine + newLine +
                                                    newLine + '\0';
                                     (ch.sendLine(frame));
+                                }
+                            }
+                        }
+                        //someone has a wanted book
+                        else if(message[1] =="has"){
+                            string owner = message[0];
+                            string book = message[2];
+                            //if i'm the one with the book
+                            if(clientData->getName() == owner){
+                                clientData->lendBook(genre, book);
+                            }
+                            //check if this book is in my WL
+                            else{
+                                if (clientData->checkBookWL(genre, book)){
+                                    string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine +
+                                                   "Taking " +book+ " from " + owner + newLine + newLine +
+                                                   newLine + '\0';
+                                    if(ch.sendLine(frame)){
+                                        clientData->removeBookWL(genre, book);
+                                        clientData->addBook(genre, book, owner);
+                                    }
                                 }
                             }
                         }

@@ -41,11 +41,13 @@ public:
    string getName();
    void addToWL(string genre, string book);
    map <string, map<pair<string, bool>, string>> getInventory();
-   void removeBook(string genre, string book);
+   void removeBookInventory(string genre, string book);
    int getGenreSubID( string genre);
    void exitClub(string genre);
-   bool checkBook(string genre, string book);
+   bool checkBookInventory(string genre, string book);
    void lendBook(string genre, string book);
+   bool checkBookWL(string genre, string book);
+    void removeBookWL(string genre, string book);
 };
 
 

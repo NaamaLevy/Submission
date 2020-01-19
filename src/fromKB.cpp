@@ -30,7 +30,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 int receiptid = clientData->getReceiptID();
                 int subid = clientData->getSubID();
                 string action = to_string(subid) +" " + "join" + " " + words[1];
-                string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt: " + to_string(receiptid) + newLine+newLine+newLine + '\0';
+                string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt:" + to_string(receiptid) + newLine+newLine+newLine + '\0';
                 if(ch.sendLine(frame)){
                     clientData->addReceipt(receiptid, action);
                 }
@@ -60,7 +60,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 string book = words[2];
                 string name = clientData->getName();
                 //create SEND frame
-                string frame = "SEND" + newLine + "destination: " + genre + newLine + name + " wish to borrow " + book + newLine+newLine+newLine + '\0';
+                string frame = "SEND" + newLine + "destination:" + genre + newLine + name + " wish to borrow " + book + newLine+newLine+newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
                 if(ch.sendLine(frame)) {
                     clientData->addToWL(genre,book);
@@ -72,22 +72,22 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 string name = clientData->getName();
                 string owner = clientData->getInventory().at(genre).at({book, true});
                 //create SEND frame
-                string frame = "SEND" + newLine + "destination: " + genre + newLine + "Returning " + book + " to" + "owner" + newLine+newLine+newLine + '\0';
+                string frame = "SEND" + newLine + "destination:" + genre + newLine + "Returning " + book + " to" + "owner" + newLine+newLine+newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
                 if(ch.sendLine(frame)) {
-                    clientData->removeBook(genre, book);
+                    clientData->removeBookInventory(genre, book);
                 }
             }
             if (words[0] == "status") {
                 string genre = words[1];
                 string name = clientData->getName();
                 //create SEND frame
-                string frame = "SEND" + newLine + "destination: " + genre + newLine + "book status" + newLine+newLine+newLine + '\0';
+                string frame = "SEND" + newLine + "destination:" + genre + newLine + "book status" + newLine+newLine+newLine + '\0';
                 ch.sendLine(frame);
             }
             if (words[0] == "logout") {
                 int receiptid = clientData->getReceiptID();
-                string frame = "DISCONNECT" + newLine + "receipt: " + to_string(receiptid )+  newLine+newLine+newLine + '\0';
+                string frame = "DISCONNECT" + newLine + "receipt:" + to_string(receiptid )+  newLine+newLine+newLine + '\0';
                 if (ch.sendLine(frame)){
                     //add receiptID and action to act when getting a receipt with this id.
                     clientData->addReceipt(receiptid, "disconnect");
