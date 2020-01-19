@@ -30,7 +30,7 @@ int main() {
         }
     }
     //login user
-    string newLine = "/n";
+    string newLine = "\n";
     int endPos = words[1].find(":");
     string host = words[1].substr(0, endPos);
     string port = words[1].substr((endPos + 1));

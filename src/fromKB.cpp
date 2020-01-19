@@ -25,7 +25,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             bool wantedLogout= false;
             std::vector<std::string> words;
             split(words, line, " ");
-            std::string newLine = "/n";
+            std::string newLine = "\n";
             if (words[0] == "join") {
                 int receiptid = clientData->getReceiptID();
                 int subid = clientData->getSubID();

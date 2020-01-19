@@ -22,7 +22,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                 cin.getline(buf, bufsize);
                 string line(buf);
                 std::vector<std::string> lines;
-                split(lines, line, " ");
+                split(lines, line, "\n");
                 //gets command
                 string command = lines[0];
                 // gets headers
@@ -46,7 +46,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                     if (lines[i+1]!=(""))
                         body = lines[i+1];
                 }
-                std::string newLine = "/n";
+                std::string newLine = "\n";
                 while (isConnected & !clientData->isConnected()){
                     if (command == "CONNECTED") {
                         clientData->setConnected(true);
