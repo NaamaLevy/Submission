@@ -31,7 +31,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 int subid = clientData->getReceiptID();
                 string action = to_string(subid) +" " + "join" + " " + words[1];
                 string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt: " + to_string(receiptid) + newLine+newLine+newLine + '\0';
-                if(ch->sendLine(frame)){
+                if(ch.sendLine(frame)){
                     clientData->addReceipt(receiptid, action);
                 }
             }
@@ -39,7 +39,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 string genre = words[1];
                 int subID = clientData->getGenreSubID(genre);
                 string frame = "UNSUBSCRIBE" + newLine + "id:" + to_string(subID) + newLine+newLine+newLine + '\0';
-                if(ch->sendLine(frame)){
+                if(ch.sendLine(frame)){
                     clientData->addReceipt(clientData->getReceiptID(), "Exited " + genre);
                 }
 
@@ -51,7 +51,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 //create SEND frame
                 string frame = "SEND" + newLine + name + " has added the book" + book + newLine+newLine+newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
-                if(ch->sendLine(frame)){
+                if(ch.sendLine(frame)){
                     clientData->addBook(genre,book,name);
                 }
             }
@@ -62,7 +62,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 //create SEND frame
                 string frame = "SEND" + newLine + "destination: " + genre + newLine + name + " wish to borrow " + book + newLine+newLine+newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
-                if(ch->sendLine(frame)) {
+                if(ch.sendLine(frame)) {
                     clientData->addToWL(genre,book);
                 }
             }
@@ -74,7 +74,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 //create SEND frame
                 string frame = "SEND" + newLine + "destination: " + genre + newLine + "Returning " + book + " to" + "owner" + newLine+newLine+newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
-                if(ch->sendLine(frame)) {
+                if(ch.sendLine(frame)) {
                     clientData->removeBook(genre, book);
                 }
             }
@@ -83,12 +83,12 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 string name = clientData->getName();
                 //create SEND frame
                 string frame = "SEND" + newLine + "destination: " + genre + newLine + "book status" + newLine+newLine+newLine + '\0';
-                ch->sendLine(frame);
+                ch.sendLine(frame);
             }
             if (words[0] == "logout") {
                 int receiptid = clientData->getReceiptID();
                 string frame = "DISCONNECT" + newLine + "receipt: " + to_string(receiptid )+  newLine+newLine+newLine + '\0';
-                if (ch->sendLine(frame)){
+                if (ch.sendLine(frame)){
                     //add receiptID and action to act when getting a receipt with this id.
                     clientData->addReceipt(receiptid, "disconnect");
                     //update client's connection status for stop getting KB commands
@@ -115,7 +115,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             for (int i = 0; i < 100; i++) {
                 std::lock_guard<std::mutex>
                 lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-                std::cout << i << ") Task " << _id << " is working" << std::endl;
+                std::cout << i << ") Task " << /*_id << */" is working" << std::endl;
             }
     }
 

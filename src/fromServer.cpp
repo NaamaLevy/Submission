@@ -16,23 +16,22 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
 }
 
     void fromServer::operator()() {
-            while (isConnected) {// we wants to read as long as there is a connection to the server
+            while (isConnected) {// we want to read as long as there is a connection to the server
                 const short bufsize = 1024;
                 char buf[bufsize];
                 cin.getline(buf, bufsize);
                 string line(buf);
                 std::vector<std::string> lines;
                 split(lines, line, " ");
-                //get command
+                //gets command
                 string command = lines[0];
-                // get headers
+                // gets headers
                 bool head = true;
                 int i = 1;
                 map<string, string> headers;
                 string body;
-                while (i<lines.size()-1){
+                while (i<lines.size()-1){ //splits headers line to <key,value> map
                     while(head){
-
                         string header;
                         header = lines[i];
                         if (header.compare(""))
@@ -43,7 +42,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         headers.insert(key, value);
                         i++;
                     }
-                    //get body
+                    //gets body
                     if (!lines[i+1].compare(""))
                         body = lines[i+1];
                 }
@@ -53,9 +52,9 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         clientData->setConnected(true);
                      }
                     if (command == "ERROR") {
-                        //extract a message to print on the client's screen
+                        //extracts a message to print on the client's screen
                         string message = headers.at("message");
-                        //print message
+                        //prints message
                         cout << message<< endl;
                     }
                 }
@@ -69,20 +68,20 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         split(act, action, " ");
                         if (act[1].compare("join")){
                             string genre = act[2];
-                            //add genre to ClientData - topicsID and inventory
+                            //adds genre to ClientData - topicsID and inventory
                             clientData->setSub(stoi(act[0]), genre);
-                            //print the required message on the client screen
+                            //prints the required message on the client screen
                             cout << "Joined club " + genre << endl;
                         } else if (act[0].compare("Exited")){
                             string genre = act[1];
-                            //delete genre from all the DBs
+                            //deletes genre from all the DBs
                             clientData->exitClub(genre);
-                            //print the required message on the client screen
+                            //prints the required message on the client screen
                             cout << "Exited club " + genre << endl;
                         } else if (act[0].compare("disconnect")){
                             //delete client's data
                             delete(clientData);
-                            //change connected to exit the loop and stop getting Server commands
+                            //changes connected to exit the loop and stop getting Server commands
                             isConnected = false;
                         }
                     }
@@ -109,7 +108,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
         for (int i = 0; i < 100; i++) {
             std::lock_guard<std::mutex>
             lock(mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-            std::cout << i << ") Task " << _id << " is working" << std::endl;
+            std::cout << i << ") Task " <</* _id << */" is working" << std::endl;
         }
     }
 

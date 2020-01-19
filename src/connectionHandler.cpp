@@ -99,7 +99,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
         return sendBytes(&delimiter,1);
     }
 
-}
+
  
 // Close down the connection properly.
 void ConnectionHandler::close() {
