@@ -20,7 +20,7 @@ private:
     bool disconnected;
     ClientData* clientData;
     ConnectionHandler& ch;
-    int isConnected;
+    bool isConnected;
 
 public:
     fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex);

@@ -16,7 +16,7 @@ private:
     int _id;
     mutex &_mutex;
     ConnectionHandler& ch;
-    int isConnected;
+    bool isConnected;
     ClientData* clientData;
 
 public:

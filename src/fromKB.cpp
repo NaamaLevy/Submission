@@ -28,7 +28,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             std::string newLine = "/n";
             if (words[0] == "join") {
                 int receiptid = clientData->getReceiptID();
-                int subid = clientData->getReceiptID();
+                int subid = clientData->getSubID();
                 string action = to_string(subid) +" " + "join" + " " + words[1];
                 string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt: " + to_string(receiptid) + newLine+newLine+newLine + '\0';
                 if(ch.sendLine(frame)){

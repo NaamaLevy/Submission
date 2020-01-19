@@ -41,15 +41,25 @@ int main() {
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
     mutex mutex;
-    fromKB fromKb(connectionHandler, -1, clientData, &mutex);
-    fromServer fromserver(connectionHandler, -1, clientData, &mutex);
+    fromKB fromKb(connectionHandler, -1, clientData, mutex);
+    fromServer fromserver(connectionHandler, -1, clientData, mutex);
     if (connectionHandler.sendLine(frame)){
-        thread th1(fromKb.run(), &fromKb);
-        thread th2(fromserver.run(), &fromserver);
+
+        thread th1(fromKb);
+        thread th2(fromserver);
         th1.join();
         th2.join();
     }
-
+//    int main(){
+//        std::mutex mutex;
+//        Task task1(1, mutex);
+//        Task task2(2, mutex);
+//
+//        std::thread th1(&Task::run, &task1);
+//        std::thread th2(&Task::run, &task2);
+//        th1.join();
+//        th2.join();
+//        return 0;
 
 
 //
