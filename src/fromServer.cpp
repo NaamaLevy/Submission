@@ -10,7 +10,7 @@
 using namespace std;
 
 fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex):
-        connectionHandler(ch),
+        ch(ch),
         isConnected(isConnected),
         clientData(&clientData), _mutex(mutex){
 }

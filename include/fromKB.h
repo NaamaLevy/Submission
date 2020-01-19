@@ -15,7 +15,7 @@ class fromKB {
 private:
     int _id;
     mutex &_mutex;
-    ConnectionHandler* ch;
+    ConnectionHandler& ch;
     int isConnected;
     ClientData* clientData;
 
