@@ -131,10 +131,6 @@ string ClientData::genreStatus(string genre) {
 
 
 
-map<int, int> m;
-vector<int> v;
-for(map<int,int>::iterator it = m.begin(); it != m.end(); ++it) {
-v.push_back(it->first);
 
 
 ClientData::~ClientData() = default;
