@@ -34,7 +34,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                     while(head){
                         string header;
                         header = lines[i];
-                        if (header.compare(""))
+                        if (header==(""))
                             head = false;
                         int index = header.find(":");
                         string key = header.substr(0, index);
@@ -43,7 +43,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         i++;
                     }
                     //gets body
-                    if (!lines[i+1].compare(""))
+                    if (lines[i+1]!=(""))
                         body = lines[i+1];
                 }
                 std::string newLine = "/n";
@@ -66,19 +66,19 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         string action = clientData->getAction(receiptid);
                         vector<string> act;
                         split(act, action, " ");
-                        if (act[1].compare("join")){
+                        if (act[1]==("join")){
                             string genre = act[2];
                             //adds genre to ClientData - topicsID and inventory
                             clientData->setSub(stoi(act[0]), genre);
                             //prints the required message on the client screen
                             cout << "Joined club " + genre << endl;
-                        } else if (act[0].compare("Exited")){
+                        } else if (act[0]==("Exited")){
                             string genre = act[1];
                             //deletes genre from all the DBs
                             clientData->exitClub(genre);
                             //prints the required message on the client screen
                             cout << "Exited club " + genre << endl;
-                        } else if (act[0].compare("disconnect")){
+                        } else if (act[0]==("disconnect")){
                             //delete client's data
                             delete(clientData);
                             //changes connected to exit the loop and stop getting Server commands
@@ -89,9 +89,9 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         vector<string> message;
                         split(message, body, " ");
                         //borrow wish message
-                        if (message[3].compare("borrow")){
+                        if (message[3]==("borrow")){
                             string genre = headers.at("destination");
-                            if (!clientData->getName().compare(message[0])){
+                            if (clientData->getName()!=(message[0])){
                                 if(clientData->checkBook(genre, message[4])) {
                                     string frame = "SEND" + newLine + "destination:" + genre + newLine +
                                                    clientData->getName() + " has " + message[4] + newLine + newLine +

@@ -15,7 +15,7 @@ int main() {
         cin.getline(buf, bufsize);
         string line(buf);
 
-        if (line.substr(0, 5).compare("login")) {
+        if (line.substr(0, 5)==("login")) {
             bool wantedLogout = false;
             size_t pos = 0;
             std::string token;
