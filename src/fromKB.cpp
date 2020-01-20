@@ -31,6 +31,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 int subid = clientData->getSubID();
                 string action = to_string(subid) +" " + "join" + " " + words[1];
                 string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt:" + to_string(receiptid)+newLine + '\0';
+
                 if(ch.sendLine(frame)){
                     clientData->addReceipt(receiptid, action);
                 }

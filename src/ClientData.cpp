@@ -30,7 +30,6 @@ int ClientData::getSubID() {
 }
 void ClientData::addReceipt(int receiptID, string action){
     receipts.insert({receiptID, action});
-
 }
 int ClientData::getReceiptID(){
     return receiptID++;

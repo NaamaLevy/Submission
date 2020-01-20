@@ -24,11 +24,11 @@ private:
     map <string, map<pair<string, bool>, string>> inventory; //map<genre, map<<book, isAvailable>, owner>
     map<string,vector<string>> wishList; //map<genre, vector<book i want>>
     map <int, string> receipts; //map<receipt id, action> //map an action to act when getting a receipt with this id.
-    atomic_int subID; //produces unique id for every sub' genre
+    atomic<int> subID; //produces unique id for every sub' genre
     bool connected;
     string userName;
     string password;
-    atomic_int receiptID;
+    atomic<int> receiptID;
 public:
    int getSubID();
    void addReceipt(int receiptID, string action);

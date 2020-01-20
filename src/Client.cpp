@@ -14,7 +14,7 @@ int main() {
         char buf[bufsize];
         cin.getline(buf, bufsize);
         string line(buf);
-  //       login 127.0.0.1:7777 hillel 123
+  //       login 127.0.0.1:8888 hillel 123
         if (line.substr(0, 5)==("login")) {
             bool wantedLogout = false;
             size_t pos = 0;
@@ -34,9 +34,9 @@ int main() {
     int endPos = words[1].find(":");
     string host = words[1].substr(0, endPos);
     string port = words[1].substr((endPos + 1));
-    string frame = "CONNECT" + newLine + "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[4] + newLine + + "passcode: " + words[5] + newLine+newLine + '\u0000';
+    string frame = "CONNECT" + newLine + "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[4] + newLine + + "passcode: " + words[5] + newLine+newLine + '\0';
     //create ClientData with username and password
-    ClientData clientData(words[4], words[5]);
+    ClientData clientData(words[2], words[3]);
     //create Connection handler with user's host and port
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
@@ -45,11 +45,10 @@ int main() {
     fromKB fromKb(connectionHandler, -1, clientData, mutex);
     fromServer fromserver(connectionHandler, -1, clientData, mutex);
     connectionHandler.sendLine(frame);
-
-        thread th1(fromKb);
-        thread th2(fromserver);
-        th1.join();
-        th2.join();
+    thread th1(fromKb);
+    thread th2(fromserver);
+    th1.join();
+    th2.join();
 
 //    int main(){
 //        std::mutex mutex;
