@@ -22,7 +22,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
             char buf[bufsize];
             std::cin.getline(buf, bufsize);
             std::string line(buf);
-            bool wantedLogout= false;
+            bool wantedLogout= false;  // todo - seems like it does nothing
             std::vector<std::string> words;
             split(words, line, " ");
             std::string newLine = "\n";
@@ -31,6 +31,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 int subid = clientData->getSubID();
                 string action = to_string(subid) +" " + "join" + " " + words[1];
                 string frame = "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) + newLine + + "receipt:" + to_string(receiptid)+newLine + '\0';
+
                 if(ch.sendLine(frame)){
                     clientData->addReceipt(receiptid, action);
                 }
