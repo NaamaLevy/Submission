@@ -41,7 +41,7 @@ string ClientData::getAction(int receiptid){
     return receipts.at(receiptid);
 }
 void ClientData:: setSub(int subid, string genre){
-    topicsID.insert({genre, subid});
+    topicsID.emplace(genre, subid);
     inventory.emplace(genre, map<pair<string, bool>,string>());
 }
 
