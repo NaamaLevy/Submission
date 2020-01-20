@@ -12,6 +12,8 @@ ClientData::ClientData(string userName, string password):userName(userName), pas
     wishList = map<string,vector<string>>();
     receipts = map <int, string>();
     connected = false;
+    subID = 0;
+    receiptID = 0;
 }
 //map <string, int> topicsID; //map<genre, id>
 //map <string, map<pair<string, bool>, string>> inventory; //map<genre, map<<book, isAvailable>, owner>
@@ -28,7 +30,6 @@ int ClientData::getSubID() {
 }
 void ClientData::addReceipt(int receiptID, string action){
     receipts.insert({receiptID, action});
-
 }
 int ClientData::getReceiptID(){
     return receiptID++;
