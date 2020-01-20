@@ -144,7 +144,6 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         }
                     }
                 }
-                line.clear();
             }
     }
 //    void run() {
