@@ -41,10 +41,10 @@ int main() {
     //create Connection handler with user's host and port
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
-    clientData.setConnected(true);  // todo - added
+    clientData.setConnected(false);
     mutex mutex;
-    fromKB fromKb(connectionHandler, -1, clientData, mutex);
-    fromServer fromserver(connectionHandler, -1, clientData, mutex);
+    fromKB fromKb(connectionHandler, true, clientData, mutex);
+    fromServer fromserver(connectionHandler, true, clientData, mutex);
     connectionHandler.sendLine(frame);
     thread th1(fromKb);
     thread th2(fromserver);

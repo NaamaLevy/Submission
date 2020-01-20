@@ -18,11 +18,9 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
     void fromServer::operator()() {
             while (isConnected) {// we want to read as long as there is a connection to the server  string line;
                 string line;
+                cout << "fromServer is operation" << endl;
                 ch.getLine(line);
                 cout<< flush << endl;
-                if(line.at(0) == 'M')
-                    cout<< line << endl;
-
                 std::vector<std::string> lines;
                 split(lines, line, "\n");
                 //gets command
@@ -32,9 +30,9 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                 int i = 1;
                 map<string, string> headers;
                 string body;
+                string header;
                 while (i<lines.size()-1){ //splits headers line to <key,value> map
                     while(head){
-                        string header;
                         header = lines[i];
                         if (header==(""))
                             head = false;
@@ -44,14 +42,17 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         headers.emplace(key, value);
                         i++;
                     }
+
                     //gets body
                     if (lines[i+1]!=(""))
                         body = lines[i+1];
+                    i++;
                 }
                 std::string newLine = "\n";
                 while (isConnected & !clientData->isConnected()){
                     if (command == "CONNECTED") {
                         clientData->setConnected(true);
+                        cout << "Login successful" << endl;
                      }
                     if (command == "ERROR") {
                         //extracts a message to print on the client's screen
@@ -60,7 +61,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         cout << message<< endl;
                     }
                 }
-                while(clientData->isConnected()){
+                if(clientData->isConnected()){
 //                    if (command == "ERROR") {
 //                    }
                     if (command == "RECEIPT") {
@@ -92,7 +93,8 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         vector<string> message;
                         split(message, body, " ");
                         //borrow wish message
-                        if (message[3]==("borrow")){
+
+                        if (message.size()>3 && message[3]==("borrow")){
                             if (clientData->getName()!=(message[0])){
                                 if(clientData->checkBookInventory(genre, message[4])) {
                                     string frame = "SEND" + newLine + "destination:" + genre  + newLine+ newLine+
@@ -102,8 +104,9 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                                 }
                             }
                         }
+
                         //someone has a wanted book
-                        else if(message[1] =="has"){
+                        else if(message[1] =="has" && message.size() == 3){
                             string owner = message[0];
                             string book = message[2];
                             //if i'm the one with the book
@@ -142,7 +145,13 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                             string frame = "SEND" + newLine + "destination:" + genre+ newLine + newLine + status + newLine + '\0';
                             ch.sendLine(frame);
                         }
+                        else{
+                            cout << "nothingggggggg" << endl;
+                            break;
+                        }
+
                     }
+                  headers.clear();
                 }
             }
     }
