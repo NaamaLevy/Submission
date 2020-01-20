@@ -12,6 +12,8 @@ ClientData::ClientData(string userName, string password):userName(userName), pas
     wishList = map<string,vector<string>>();
     receipts = map <int, string>();
     connected = false;
+    subID = 0;
+    receiptID = 0;
 }
 //map <string, int> topicsID; //map<genre, id>
 //map <string, map<pair<string, bool>, string>> inventory; //map<genre, map<<book, isAvailable>, owner>
@@ -49,11 +51,16 @@ bool ClientData::isConnected() {
 }
 
 void ClientData::addBook(string genre, string book, string owner) {
+    if(inventory.count(genre));
     inventory.at(genre).emplace(make_pair(book,true), owner);
 }
 
 string ClientData::getName() {
     return userName;
+}
+
+void ClientData::setName(string name) {
+    userName = name;
 }
 
 void ClientData::addToWL(string genre, string book) {

@@ -39,7 +39,8 @@ public:
    bool isConnected();
    void addBook(string genre, string book, string owner);
    string getName();
-   void addToWL(string genre, string book);
+    void setName(string);
+    void addToWL(string genre, string book);
    map <string, map<pair<string, bool>, string>> getInventory();
    void removeBookInventory(string genre, string book);
    int getGenreSubID( string genre);
