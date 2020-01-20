@@ -16,11 +16,13 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
 }
 
     void fromServer::operator()() {
-            while (isConnected) {// we want to read as long as there is a connection to the server
-                const short bufsize = 1024;
-                char buf[bufsize];
-                cin.getline(buf, bufsize);
-                string line(buf);
+            while (isConnected) {// we want to read as long as there is a connection to the server  string line;
+                string line;
+                ch.getLine(line);
+                cout<< flush << endl;
+                if(line.at(0) == 'M')
+                    cout<< line << endl;
+
                 std::vector<std::string> lines;
                 split(lines, line, "\n");
                 //gets command
@@ -142,6 +144,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                         }
                     }
                 }
+                line.clear();
             }
     }
 //    void run() {
