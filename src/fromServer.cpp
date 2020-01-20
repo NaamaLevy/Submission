@@ -114,10 +114,8 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                                     string frame = "SEND" + newLine + "destination:" + genre +  newLine + newLine +
                                                    "Taking " +book+ " from " + owner  +
                                                    newLine + '\0';
-                                    if(ch.sendLine(frame)){
-                                        clientData->removeBookWL(genre, book);
-                                        clientData->addBook(genre, book, owner);
-                                    }
+                                    ch.sendLine(frame);
+                                    clientData->removeBookWL(genre, book);
                                 }
                             }
                         }
@@ -132,9 +130,8 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                                 } else{
                                     string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine+ "Returning " + book + " to" + "owner" + newLine + '\0';
                                     //if succeed to send the frame, add the book to user's inventory
-                                    if(ch.sendLine(frame)) {
-                                        clientData->removeBookInventory(genre, book);
-                                    }
+                                    ch.sendLine(frame);
+                                    clientData->removeBookInventory(genre, book);
                                 }
                             }
                         }
