@@ -14,7 +14,7 @@ int main() {
         char buf[bufsize];
         cin.getline(buf, bufsize);
         string line(buf);
-  //       login 127.0.0.1:7777 hillel 123
+  //       login 132.72.40.238:7777 naama 222
   //
         if (line.substr(0, 5)==("login")) {
             bool wantedLogout = false;

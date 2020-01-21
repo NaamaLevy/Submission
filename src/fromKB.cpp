@@ -26,7 +26,13 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                 std::vector<std::string> words;
                 split(words, line, " ");
                 std::string newLine = "\n";
-
+                if (words[0] == "login") {
+                    int endPos = words[1].find(":");
+                    string host = words[1].substr(0, endPos);
+                    string port = words[1].substr((endPos + 1));
+                    string frame = "CONNECT" + newLine + "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[4] + newLine + + "passcode: " + words[5] + newLine+newLine + '\0';
+                    ch.sendLine(frame);
+                }
                 if (words[0] == "join") {
                     int receiptid = clientData->getReceiptID();
                     int subid = clientData->getSubID();
