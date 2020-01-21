@@ -17,6 +17,7 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
 
     void fromServer::operator()() {
             while (isConnected) {// we want to read as long as there is a connection to the server  string line;
+
                 string line;
                 cout << "fromServer is operation" << endl;
                 ch.getLine(line);

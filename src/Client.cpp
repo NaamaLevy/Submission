@@ -43,11 +43,13 @@ int main() {
     connectionHandler.connect();
     clientData.setConnected(false);
     mutex mutex;
-    fromKB fromKb(connectionHandler, true, clientData, mutex);
     fromServer fromserver(connectionHandler, true, clientData, mutex);
+    fromKB fromKb(connectionHandler, true, clientData, mutex);
     connectionHandler.sendLine(frame);
+
     thread th1(fromKb);
     thread th2(fromserver);
+
     th1.join();
     th2.join();
 

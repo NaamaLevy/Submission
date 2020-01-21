@@ -98,6 +98,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                     ch.sendLine(frame);
                 }
                 if (words[0] == "logout") {
+                    cout << "i'm loging out" << endl;
                     int receiptid = clientData->getReceiptID();
                     string frame = "DISCONNECT" + newLine + "receipt:" + to_string(receiptid) + newLine + '\0';
                     ch.sendLine(frame);
@@ -105,7 +106,7 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                         clientData->addReceipt(receiptid, "disconnect");
                         //update client's connection status for stop getting KB commands
                         clientData->setConnected(false);
-
+                        isConnected = false;
                 }
                 line.clear();
             }
