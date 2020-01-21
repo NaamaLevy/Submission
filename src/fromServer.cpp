@@ -9,7 +9,7 @@
 
 using namespace std;
 
-fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData):
+fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
         ch(ch),
         isConnected(isConnected),
         clientData(&clientData){

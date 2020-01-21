@@ -9,7 +9,7 @@
 using namespace std;
 
 
-fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData):
+fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
         ch(ch),
         isConnected(isConnected),
         clientData(&clientData){

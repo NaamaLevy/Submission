@@ -22,7 +22,7 @@ private:
     bool isConnected;
 
 public:
-    fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData);
+    fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clientData);
 
     void run();
 

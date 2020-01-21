@@ -19,7 +19,7 @@ private:
     ClientData* clientData;
 
 public:
-    fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData);
+    fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData);
 
     void run();
     void operator()();
