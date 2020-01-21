@@ -67,8 +67,13 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                     }
                 }
                 if(clientData->isConnected()){
-//                    if (command == "ERROR") {
-//                    }
+                    if (command == "ERROR") {
+                        //extracts a message to print on the client's screen
+                        string message = headers.at("message");
+                        //prints message
+                        cout << message<< endl;
+                    }
+
                     if (command == "RECEIPT") {
                         int receiptid = stoi(headers.at("receipt-id")); //add the same split algorithm as in the server side.
                         string action = clientData->getAction(receiptid);
