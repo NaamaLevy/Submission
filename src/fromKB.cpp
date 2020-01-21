@@ -56,10 +56,10 @@ fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, m
                     string name = clientData->getName();
                     //create SEND frame
                     string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine + name +
-                                   " has added the book" + book + newLine +  newLine + '\u0000';
+                                   " has added the book " + book + newLine +  newLine + '\u0000';
                     //if succeed to send the frame, add the book to user's inventory
                     ch.sendLine(frame);
-                        clientData->addBook(genre, book, name);
+                    clientData->addBook(genre, book, name);
 
                 }
                 if (words[0] == "borrow") {

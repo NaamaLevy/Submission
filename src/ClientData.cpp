@@ -42,7 +42,8 @@ string ClientData::getAction(int receiptid){
 }
 void ClientData:: setSub(int subid, string genre){
     topicsID.emplace(genre, subid);
-    inventory.emplace(genre, map<pair<string, bool>,string>());
+    map<pair<string, bool>, string> bookMap;
+    inventory.emplace(genre, bookMap);
 }
 
 bool ClientData::isConnected() {
@@ -50,8 +51,10 @@ bool ClientData::isConnected() {
 }
 
 void ClientData::addBook(string genre, string book, string owner) {
-    if(inventory.count(genre));
-    inventory.at(genre).emplace(make_pair(book,true), owner);
+    if(inventory.count(genre)==1){
+        inventory.at(genre).emplace(make_pair(book,true), owner);
+    }
+
 }
 
 string ClientData::getName() {

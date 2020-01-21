@@ -38,14 +38,17 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                             head = false;
                         int index = header.find(":");
                         string key = header.substr(0, index);
-                        string value = header.substr(index + 1, header.length());
-                        headers.emplace(key, value);
+                        if (key!=""){
+                            string value = header.substr(index + 1, header.length());
+                            headers.emplace(key, value);
+                        }
                         i++;
                     }
 
                     //gets body
-                    if (lines[i+1]!=(""))
-                        body = lines[i+1];
+                    if (lines[i]!=(""))
+                        body = lines[i];
+                    break;
                     i++;
                 }
                 std::string newLine = "\n";
@@ -87,8 +90,12 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                             //changes connected to exit the loop and stop getting Server commands
                             isConnected = false;
                         }
+                        else{
+                            break;
+                        }
                     }
                     if (command == "MESSAGE") {
+                        cout << "got MESSAGE" << endl;
                         string genre = headers.at("destination");
                         vector<string> message;
                         split(message, body, " ");
@@ -146,12 +153,14 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                             ch.sendLine(frame);
                         }
                         else{
-                            cout << "nothingggggggg" << endl;
+                            cout << "don't care" << endl;
+                            message.clear();
                             break;
                         }
 
                     }
                   headers.clear();
+
                 }
             }
     }
