@@ -15,7 +15,7 @@ int main() {
         cin.getline(buf, bufsize);
         string line(buf);
   //       login 132.72.40.238:7777 naama 222
-  //
+  //        login 127.0.0.1:7777 naama 222
         if (line.substr(0, 5)==("login")) {
             bool wantedLogout = false;
             size_t pos = 0;
@@ -42,14 +42,13 @@ int main() {
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
     clientData.setConnected(false);
-    mutex mutex;
-    fromServer fromserver(connectionHandler, true, clientData, mutex);
-    fromKB fromKb(connectionHandler, true, clientData, mutex);
-    connectionHandler.sendLine(frame);
 
+    mutex mutex;
+    fromKB fromKb(connectionHandler, true, clientData);
+    fromServer fromserver(connectionHandler, true, clientData);
     thread th1(fromKb);
     thread th2(fromserver);
-
+    connectionHandler.sendLine(frame);
     th1.join();
     th2.join();
 

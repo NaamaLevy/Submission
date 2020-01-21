@@ -16,14 +16,13 @@ using namespace std;
 class fromServer {
 private:
     int _id;
-    mutex &_mutex;
     bool disconnected;
     ClientData* clientData;
     ConnectionHandler& ch;
     bool isConnected;
 
 public:
-    fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex);
+    fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData);
 
     void run();
 

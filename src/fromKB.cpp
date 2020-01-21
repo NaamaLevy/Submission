@@ -9,10 +9,10 @@
 using namespace std;
 
 
-fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex):
+fromKB::fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData):
         ch(ch),
         isConnected(isConnected),
-        clientData(&clientData), _mutex(mutex){
+        clientData(&clientData){
 }
 
 

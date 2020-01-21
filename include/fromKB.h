@@ -14,13 +14,12 @@ using namespace std;
 class fromKB {
 private:
     int _id;
-    mutex &_mutex;
     ConnectionHandler& ch;
     bool isConnected;
     ClientData* clientData;
 
 public:
-    fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex);
+    fromKB(ConnectionHandler &ch, int isConnected, ClientData &clientData);
 
     void run();
     void operator()();

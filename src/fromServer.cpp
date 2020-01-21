@@ -9,10 +9,10 @@
 
 using namespace std;
 
-fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData, mutex &mutex):
+fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clientData):
         ch(ch),
         isConnected(isConnected),
-        clientData(&clientData), _mutex(mutex){
+        clientData(&clientData){
 }
 
     void fromServer::operator()() {
