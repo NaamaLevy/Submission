@@ -41,7 +41,7 @@ int main() {
     //create Connection handler with user's host and port
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
-    clientData.setConnected(false);
+//    clientData.setConnected(true);
 
     mutex mutex;
     fromKB fromKb(connectionHandler, true, clientData);

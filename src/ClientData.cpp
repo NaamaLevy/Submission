@@ -12,7 +12,6 @@ ClientData::ClientData(string userName, string password):userName(userName), pas
     wishList = map<string,vector<string>>();
     receipts = map <int, string>();
     connected = false;
-    subID = 0;
     receiptID = 0;
 }
 //map <string, int> topicsID; //map<genre, id>

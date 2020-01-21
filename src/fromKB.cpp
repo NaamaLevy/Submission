@@ -17,11 +17,10 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
 
 
     void fromKB::operator()() {
-        while (clientData->isConnected()) {// we wants to read as long as there is a connection to the server
+        while (isConnected) {// we wants to read as long as there is a connection to the server
             string line;
             getline(cin, line);
 
-            bool wantedLogout = false;  // todo - seems like it does nothing
             std::vector<std::string> words;
             split(words, line, " ");
             std::string newLine = "\n";
@@ -32,7 +31,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 string frame = "CONNECT" + newLine + "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[4] + newLine + + "passcode: " + words[5] + newLine+newLine + '\0';
                 ch.sendLine(frame);
             }
-            if (words[0] == "join") {
+            if (clientData->isConnected() && words[0] == "join") {
                 int receiptid = clientData->getReceiptID();
                 int subid = clientData->getSubID();
                 string action = to_string(subid) + " " + "join" + " " + words[1];
@@ -44,7 +43,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                     clientData->addReceipt(receiptid, action);
 
             }
-            if (words[0] == "exit") {
+            if (clientData->isConnected() && words[0] == "exit") {
                 string genre = words[1];
                 int subID = clientData->getGenreSubID(genre);
                 //create SUBSCRIBE frame
@@ -55,7 +54,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
 
 
             }
-            if (words[0] == "add") {
+            if (clientData->isConnected() && words[0] == "add") {
                 string genre = words[1];
                 string book = words[2];
                 string name = clientData->getName();
@@ -67,7 +66,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 clientData->addBook(genre, book, name);
 
             }
-            if (words[0] == "borrow") {
+            if (clientData->isConnected() && words[0] == "borrow") {
                 string genre = words[1];
                 string book = words[2];
                 string name = clientData->getName();
@@ -80,7 +79,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                     clientData->addToWL(genre, book);
 
             }
-            if (words[0] == "return") {
+            if (clientData->isConnected() && words[0] == "return") {
                 string genre = words[1];
                 string book = words[2];
                 string name = clientData->getName();
@@ -116,7 +115,6 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
             line.clear();
         cout << "while finished" << endl;
         }
-
     }
 
 

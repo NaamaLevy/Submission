@@ -17,6 +17,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
 
     void fromServer::operator()() {
         // we want to read as long as there is a connection to the server  string line;
+        while (isConnected){
         string line;
         cout << "fromServer is operation" << endl;
         ch.getLine(line);
@@ -54,7 +55,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
             i++;
         }
         std::string newLine = "\n";
-        while (!clientData->isConnected()){
+
             if (command == "CONNECTED") {
                 clientData->setConnected(true);
                 cout << "Login successful" << endl;
@@ -65,16 +66,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 //prints message
                 cout << message<< endl;
             }
-        }
-        while (clientData->isConnected()){
-            if (command == "ERROR") {
-                //extracts a message to print on the client's screen
-                string message = headers.at("message");
-                //prints message
-                cout << message<< endl;
-            }
-
-            if (command == "RECEIPT") {
+            if (clientData->isConnected()&&command == "RECEIPT") {
                 int receiptid = stoi(headers.at("receipt-id")); //add the same split algorithm as in the server side.
                 string action = clientData->getAction(receiptid);
                 vector<string> act;
@@ -100,7 +92,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 else{
                 }
             }
-            if (command == "MESSAGE") {
+            if (clientData->isConnected()&& command == "MESSAGE") {
                 cout << "got MESSAGE" << endl;
                 string genre = headers.at("destination");
                 vector<string> message;
