@@ -96,7 +96,7 @@ void ClientData::exitClub(string genre) {
 }
 
 bool ClientData::checkBookInventory(string genre, string book) {
-    return (inventory.at(genre).count(make_pair(book,true))==1);
+    return ((inventory.at(genre)).count(make_pair(book,true))==1);
 }
 
 void ClientData::lendBook(string genre, string book) {

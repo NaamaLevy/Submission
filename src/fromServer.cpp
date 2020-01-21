@@ -154,6 +154,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                     cout << "don't care" << endl;
                     message.clear();
                 }
+
             }
           headers.clear();
         }
