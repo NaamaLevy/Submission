@@ -46,9 +46,11 @@ fromServer::fromServer(ConnectionHandler &ch, int isConnected, ClientData &clien
                     }
 
                     //gets body
-                    if (lines[i]!=(""))
+                    if (lines[i]!=("")){
                         body = lines[i];
-                    break;
+                        cout << body << endl;
+                        break;
+                    }
                     i++;
                 }
                 std::string newLine = "\n";
