@@ -52,45 +52,6 @@ int main() {
     th1.join();
     th2.join();
 
-//    int main(){
-//        std::mutex mutex;
-//        Task task1(1, mutex);
-//        Task task2(2, mutex);
-//
-//        std::thread th1(&Task::run, &task1);
-//        std::thread th2(&Task::run, &task2);
-//        th1.join();
-//        th2.join();
-//        return 0;
-
-
-//
-//        int *isConnected = new int(0);
-//
-//
-//
-//        if (!connectionHandler.connect()) { //handeling fail in connection
-//            std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
-//            return 1;
-//        }
-//
-//        fromKB readTask(&connectionHandler, isConnected);
-//        std::thread th1(readTask);
-//
-//        while (1) {
-//            Packet *p = connectionHandler.decodeNextMessage();
-//            protocol.process(p);
-//            delete p;
-//            if (connectionHandler.IsDisconnectApproved()) {
-//                break;
-//            }
-//        }
-//
-//        th1.join();
-//        delete islogged;
-//        return 0;
-
-
 
     return 0;
 }

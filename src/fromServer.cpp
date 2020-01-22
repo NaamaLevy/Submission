@@ -157,7 +157,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
             }
           headers.clear();
         }
-        terminate();
+        ch.close();
     }
 //    void run() {
 //        for (int i = 0; i < 100; i++) {

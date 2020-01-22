@@ -116,7 +116,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
             line.clear();
         cout << "while finished" << endl;
         }
-        terminate();
+//        terminate();
     }
 
 
