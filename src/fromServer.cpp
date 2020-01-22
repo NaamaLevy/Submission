@@ -98,11 +98,18 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 split(message, body, " ");
                 //borrow wish message
 
+                int i = 4;
+                string book;
+                while (i<message.size()) {
+                    book = book +  message[i] + " ";
+                    i++;
+                }
+
                 if (message.size()>3 && message[3]==("borrow")){
                     if (clientData.getName()!=(message[0])){
-                        if(clientData.checkBookInventory(genre, message[4])) {
+                        if(clientData.checkBookInventory(genre, book)) {
                             string frame = "SEND" + newLine + "destination:" + genre  + newLine+ newLine+
-                                           clientData.getName() + " has " + message[4]  +
+                                           clientData.getName() + " has " + book +
                                            newLine + '\0';
                             (ch.sendLine(frame));
                         }
@@ -112,7 +119,12 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 //someone has a wanted book
                 else if(message.size() == 3 && message[1] =="has"){
                     string owner = message[0];
-                    string book = message[2];
+                    int i = 2;
+                    string book;
+                    while (i<message.size()) {
+                        book = book +  message[i] + " ";
+                        i++;
+                    }
                     //if i'm the one with the book
                     if(clientData.getName() == owner){
                         clientData.lendBook(genre, book);
@@ -130,7 +142,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 }
                 //someone is returning a book
                 else if (message[0]=="Returning"){
-                    string book = message[1];
+                    string book = message[1];  // todo - long book name!!!
                     string lender = message[3];
                     if(lender == clientData.getName()){
                         string owner = clientData.getOwner(genre,book);
