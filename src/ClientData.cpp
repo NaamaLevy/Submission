@@ -118,12 +118,22 @@ void ClientData::lendBook(string genre, string book) {
 }
 
 bool ClientData::checkBookWL(string genre, string book) {
-    return(find(wishList.at(genre).begin(), wishList.at(genre).end(), book) == wishList.at(genre).end());
+    return(find(wishList.at(genre).begin(), wishList.at(genre).end(), book) != wishList.at(genre).end());
+//    map <pair<string, bool>, string> innerMap = wishList.at(genre);
+//    map <pair<string, bool>, string>:: iterator iterator;
+//    for(iterator = innerMap.begin(); iterator != innerMap.end(); iterator++){
+//        if((iterator->first).first == book && (iterator->first).second){
+//            return true;
+//        }
+//    }
+
 }
 
 void ClientData::removeBookWL(string genre, string book) {
-    vector<string> genreBooks = wishList.at(genre);
-   genreBooks.erase(remove(genreBooks.begin(),genreBooks.end(), book), genreBooks.end());
+//    vector<string> genreBooks = wishList.at(genre);
+//   genreBooks.erase(remove(genreBooks.begin(),genreBooks.end(), book), genreBooks.end());
+    auto itr = find(wishList.at(genre).begin(), wishList.at(genre).end(), book);
+    if (itr != wishList.at(genre).end()) wishList.at(genre).erase(itr);
 }
 
 string ClientData::getOwner(string genre, string book) {

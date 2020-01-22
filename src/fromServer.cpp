@@ -140,12 +140,20 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                                            newLine + '\0';
                             ch.sendLine(frame);
                             clientData.removeBookWL(genre, book);
+                            clientData.addBook(genre, book, owner);
                         }
                     }
                 }
                 //someone is returning a book
                 else if (message[0]=="Returning"){
-                    string book = message[1];  // todo - long book name!!!
+                    string book;
+                    int i = 1;
+                    while (message[i] != "to"){
+                        book = book + message[i] + " ";
+                        i++;
+                    }
+
+
                     string lender = message[3];
                     if(lender == clientData.getName()){
                         string owner = clientData.getOwner(genre,book);
