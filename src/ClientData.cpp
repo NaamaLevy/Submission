@@ -139,8 +139,8 @@ string ClientData::genreStatus(string genre) {
     string books = userName+ ":";
     vector<pair<string, bool>> v;
     map<pair<string, bool>, string>::iterator it;
-    it = inventory.at("drama").begin();
-    for( it ; it != inventory.at("drama").end(); ++it) {
+    it = inventory.at(genre).begin();
+    for( it ; it != inventory.at(genre).end(); ++it) {
         v.push_back(it->first);
     }
     for (pair<string, bool> book : v ){

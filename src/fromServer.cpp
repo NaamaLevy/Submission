@@ -98,14 +98,15 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 split(message, body, " ");
                 //borrow wish message
 
-                int i = 5;
-                string book;
-                while (i<message.size()) {
-                    book = book +  message[i];
-                    i++;
-                }
+
 
                 if (message.size()>3 && message[3]==("borrow")){
+                    int i = 4;
+                    string book;
+                    while (i<message.size()) {
+                        book = book +  message[i] + " ";
+                        i++;
+                    }
                     if (clientData.getName()!=(message[0])){
                         if(clientData.checkBookInventory(genre, book)) {
                             string frame = "SEND" + newLine + "destination:" + genre  + newLine+ newLine+
@@ -117,7 +118,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 }
 
                 //someone has a wanted book
-                else if(message.size() == 3 && message[1] =="has"){
+                else if(message.size()>1 && (message[2] != "added") && message[1] =="has"){
                     string owner = message[0];
                     int i = 2;
                     string book;
