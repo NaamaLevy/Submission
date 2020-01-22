@@ -101,7 +101,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 int i = 4;
                 string book;
                 while (i<message.size()) {
-                    book = book +  message[i] + " ";
+                    book = book +  message[i];
                     i++;
                 }
 
