@@ -102,7 +102,7 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 string owner = clientData.getInventory().at(genre).at({book, true});
                 //create SEND frame
                 string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine + "Returning " + book +
-                               " to " + "owner" + newLine + '\0';
+                               " to " + owner + newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
                 ch.sendLine(frame);
                     clientData.removeBookInventory(genre, book);
