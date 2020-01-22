@@ -137,7 +137,7 @@ string ClientData::genreStatus(string genre) {
         if (book.second)
             books = books + book.first + "," ;
     }
-    return books;
+    return books.substr(0,books.size()-1);
 }
 
 

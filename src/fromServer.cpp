@@ -111,7 +111,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 }
 
                 //someone has a wanted book
-                else if(message[1] =="has" && message.size() == 3){
+                else if(message.size() == 3 && message[1] =="has"){
                     string owner = message[0];
                     string book = message[2];
                     //if i'm the one with the book
@@ -145,7 +145,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                         }
                     }
                 }
-                else if (message[1] == "status"){
+                else if (message.size()>1 && message[1] == "status"){
                     string status = clientData->genreStatus(genre);
                     string frame = "SEND" + newLine + "destination:" + genre+ newLine + newLine + status + newLine + '\0';
                     ch.sendLine(frame);
