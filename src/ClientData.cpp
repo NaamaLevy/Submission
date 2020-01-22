@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <iterator>
+
 using namespace std;
 
 ClientData::ClientData(string userName, string password):userName(userName), password(password){
@@ -126,13 +128,14 @@ void ClientData::returnBooktoMe(string genre, string book) {
 string ClientData::genreStatus(string genre) {
     string books = userName+ ":";
     vector<pair<string, bool>> v;
-    map<pair<string, bool>, string> genreMap = inventory.at(genre);
-    for(map<pair<string, bool>, string>::iterator it = genreMap.begin(); it != genreMap.end(); ++it) {
+    map<pair<string, bool>, string>::iterator it;
+    it = inventory.at("drama").begin();
+    for( it ; it != inventory.at("drama").end(); ++it) {
         v.push_back(it->first);
-        for (pair<string, bool> book : v ){
-            if (book.second)
-                books = books+book.first;
-        }
+    }
+    for (pair<string, bool> book : v ){
+        if (book.second)
+            books = books + book.first + "," ;
     }
     return books;
 }
