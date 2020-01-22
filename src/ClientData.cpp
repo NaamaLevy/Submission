@@ -100,10 +100,14 @@ void ClientData::exitClub(string genre) {
 }
 
 bool ClientData::checkBookInventory(string genre, string book) {
-    pair<string,bool> p = make_pair(book, true);
-    int count = (inventory.at("drama")).count(make_pair("boo",true));
-    bool check = ((inventory.at(genre)).count(p)==1);
-    return check;
+    map <pair<string, bool>, string> innerMap = inventory.at(genre);
+    map <pair<string, bool>, string>:: iterator iterator;
+    for(iterator = innerMap.begin(); iterator != innerMap.end(); iterator++){
+        if((iterator->first).first == book && (iterator->first).second){
+            return true;
+        }
+    }
+
 //    return ((inventory.at(genre)).count(make_pair(book,true))==1);
 }
 

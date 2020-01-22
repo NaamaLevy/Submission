@@ -98,7 +98,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 split(message, body, " ");
                 //borrow wish message
 
-                int i = 4;
+                int i = 5;
                 string book;
                 while (i<message.size()) {
                     book = book +  message[i];
