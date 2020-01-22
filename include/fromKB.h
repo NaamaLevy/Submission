@@ -16,7 +16,7 @@ private:
     int _id;
     ConnectionHandler& ch;
     bool isConnected;
-    ClientData* clientData;
+    ClientData &clientData;
 
 public:
     fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData);

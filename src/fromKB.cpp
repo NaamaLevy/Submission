@@ -12,7 +12,7 @@ using namespace std;
 fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
         ch(ch),
         isConnected(isConnected),
-        clientData(&clientData){
+        clientData(clientData){
 }
 
 
@@ -31,70 +31,71 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 string frame = "CONNECT" + newLine + "accept-version:1.2" + newLine + "host: " + host + newLine + "login: " + words[4] + newLine + + "passcode: " + words[5] + newLine+newLine + '\0';
                 ch.sendLine(frame);
             }
-            if (clientData->isConnected() && words[0] == "join") {
-                int receiptid = clientData->getReceiptID();
-                int subid = clientData->getSubID();
+            if (clientData.isConnected() && words[0] == "join") {
+                int receiptid = clientData.getReceiptID();
+                int subid = clientData.getSubID();
                 string action = to_string(subid) + " " + "join" + " " + words[1];
                 string frame =
                         "SUBSCRIBE" + newLine + "destination:" + words[1] + newLine + "id: " + to_string(subid) +
                         newLine + +"receipt:" + to_string(receiptid) + newLine + '\0';
 
                 ch.sendLine(frame);
-                    clientData->addReceipt(receiptid, action);
+                    clientData.addReceipt(receiptid, action);
 
             }
-            if (clientData->isConnected() && words[0] == "exit") {
+            if (clientData.isConnected() && words[0] == "exit") {
                 string genre = words[1];
-                int subID = clientData->getGenreSubID(genre);
+                int subID = clientData.getGenreSubID(genre);
+                int receiptid = clientData.getReceiptID();
                 //create SUBSCRIBE frame
-                string frame = "UNSUBSCRIBE" + newLine + "id:" + to_string(subID) + newLine + '\0';
+                string frame = "UNSUBSCRIBE" + newLine + "id:" + to_string(subID) + newLine +"receipt:" + to_string(receiptid) + newLine+ '\0';
                 //if succeed to send the frame, add an action for getting SUBSCRIBED frame from the server
                 ch.sendLine(frame);
-                    clientData->addReceipt(clientData->getReceiptID(), "Exited " + genre);
+                    clientData.addReceipt(receiptid, "Exited " + genre);
 
 
             }
-            if (clientData->isConnected() && words[0] == "add") {
+            if (clientData.isConnected() && words[0] == "add") {
                 string genre = words[1];
                 string book = words[2];
-                string name = clientData->getName();
+                string name = clientData.getName();
                 //create SEND frame
                 string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine + name +
                                " has added the book " + book + newLine +  newLine + '\u0000';
                 //if succeed to send the frame, add the book to user's inventory
                 ch.sendLine(frame);
-                clientData->addBook(genre, book, name);
+                clientData.addBook(genre, book, name);
 
             }
-            if (clientData->isConnected() && words[0] == "borrow") {
+            if (clientData.isConnected() && words[0] == "borrow") {
                 string genre = words[1];
                 string book = words[2];
-                string name = clientData->getName();
+                string name = clientData.getName();
                 //create SEND frame
                 string frame =
                         "SEND" + newLine + "destination:" + genre + newLine + newLine + name + " wish to borrow " +
                         book + newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
                 ch.sendLine(frame);
-                    clientData->addToWL(genre, book);
+                    clientData.addToWL(genre, book);
 
             }
-            if (clientData->isConnected() && words[0] == "return") {
+            if (clientData.isConnected() && words[0] == "return") {
                 string genre = words[1];
                 string book = words[2];
-                string name = clientData->getName();
-                string owner = clientData->getInventory().at(genre).at({book, true});
+                string name = clientData.getName();
+                string owner = clientData.getInventory().at(genre).at({book, true});
                 //create SEND frame
                 string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine + "Returning " + book +
                                " to" + "owner" + newLine + '\0';
                 //if succeed to send the frame, add the book to user's inventory
                 ch.sendLine(frame);
-                    clientData->removeBookInventory(genre, book);
+                    clientData.removeBookInventory(genre, book);
 
             }
             if (words[0] == "status") {
                 string genre = words[1];
-                string name = clientData->getName();
+                string name = clientData.getName();
                 //create SEND frame
                 string frame =
                         "SEND" + newLine + "destination:" + genre + newLine + newLine + "book status" + newLine +
@@ -103,18 +104,19 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
             }
             if (words[0] == "logout") {
                 cout << "i'm loging out" << endl;
-                int receiptid = clientData->getReceiptID();
+                int receiptid = clientData.getReceiptID();
                 string frame = "DISCONNECT" + newLine + "receipt:" + to_string(receiptid) + newLine + '\0';
                 ch.sendLine(frame);
                     //add receiptID and action to act when getting a receipt with this id.
-                    clientData->addReceipt(receiptid, "disconnect");
+                    clientData.addReceipt(receiptid, "disconnect");
                     //update client's connection status for stop getting KB commands
-                    clientData->setConnected(false);
+                    clientData.setConnected(false);
                     isConnected = false;
             }
             line.clear();
         cout << "while finished" << endl;
         }
+        terminate();
     }
 
 

@@ -88,10 +88,12 @@ int ClientData::getGenreSubID(string genre) {
 
 void ClientData::exitClub(string genre) {
     //remove genre and its books from the WL
-    wishList.at(genre).clear();
-    wishList.erase(genre);
+    if (wishList.count(genre) != 0){
+//        wishList.at(genre).clear();
+        wishList.erase(genre);
+    }
     //remove genre and its books from the inventory
-    inventory.at(genre).clear();
+//    inventory.at(genre).clear();
     inventory.erase(genre);
     //remove genre and its subID from topicsID
     topicsID.erase(genre);

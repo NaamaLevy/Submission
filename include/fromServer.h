@@ -17,7 +17,7 @@ class fromServer {
 private:
     int _id;
     bool disconnected;
-    ClientData* clientData;
+    ClientData& clientData;
     ConnectionHandler& ch;
     bool isConnected;
 

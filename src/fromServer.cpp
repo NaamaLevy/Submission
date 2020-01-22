@@ -12,7 +12,7 @@ using namespace std;
 fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
         ch(ch),
         isConnected(isConnected),
-        clientData(&clientData){
+        clientData(clientData){
 }
 
     void fromServer::operator()() {
@@ -57,7 +57,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
         std::string newLine = "\n";
 
             if (command == "CONNECTED") {
-                clientData->setConnected(true);
+                clientData.setConnected(true);
                 cout << "Login successful" << endl;
              }
             if (command == "ERROR") {
@@ -65,34 +65,33 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 string message = headers.at("message");
                 //prints message
                 cout << message<< endl;
+                clientData.setConnected(false);
             }
-            if (clientData->isConnected()&&command == "RECEIPT") {
+            if (clientData.isConnected()&&command == "RECEIPT") {
                 int receiptid = stoi(headers.at("receipt-id")); //add the same split algorithm as in the server side.
-                string action = clientData->getAction(receiptid);
+                string action = clientData.getAction(receiptid);
                 vector<string> act;
                 split(act, action, " ");
                 if (act[1]==("join")){
                     string genre = act[2];
                     //adds genre to ClientData - topicsID and inventory
-                    clientData->setSub(stoi(act[0]), genre);
+                    clientData.setSub(stoi(act[0]), genre);
                     //prints the required message on the client screen
                     cout << "Joined club " + genre << endl;
                 } else if (act[0]==("Exited")){
                     string genre = act[1];
                     //deletes genre from all the DBs
-                    clientData->exitClub(genre);
+                    clientData.exitClub(genre);
                     //prints the required message on the client screen
                     cout << "Exited club " + genre << endl;
                 } else if (act[0]==("disconnect")){
-                    //delete client's data
-                    delete(clientData);
                     //changes connected to exit the loop and stop getting Server commands
                     isConnected = false;
                 }
                 else{
                 }
             }
-            if (clientData->isConnected()&& command == "MESSAGE") {
+            if (clientData.isConnected()&& command == "MESSAGE") {
                 cout << "got MESSAGE" << endl;
                 string genre = headers.at("destination");
                 vector<string> message;
@@ -100,10 +99,10 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 //borrow wish message
 
                 if (message.size()>3 && message[3]==("borrow")){
-                    if (clientData->getName()!=(message[0])){
-                        if(clientData->checkBookInventory(genre, message[4])) {
+                    if (clientData.getName()!=(message[0])){
+                        if(clientData.checkBookInventory(genre, message[4])) {
                             string frame = "SEND" + newLine + "destination:" + genre  + newLine+ newLine+
-                                           clientData->getName() + " has " + message[4]  +
+                                           clientData.getName() + " has " + message[4]  +
                                            newLine + '\0';
                             (ch.sendLine(frame));
                         }
@@ -115,17 +114,17 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                     string owner = message[0];
                     string book = message[2];
                     //if i'm the one with the book
-                    if(clientData->getName() == owner){
-                        clientData->lendBook(genre, book);
+                    if(clientData.getName() == owner){
+                        clientData.lendBook(genre, book);
                     }
                     //check if this book is in my WL
                     else{
-                        if (clientData->checkBookWL(genre, book)){
+                        if (clientData.checkBookWL(genre, book)){
                             string frame = "SEND" + newLine + "destination:" + genre +  newLine + newLine +
                                            "Taking " +book+ " from " + owner  +
                                            newLine + '\0';
                             ch.sendLine(frame);
-                            clientData->removeBookWL(genre, book);
+                            clientData.removeBookWL(genre, book);
                         }
                     }
                 }
@@ -133,20 +132,20 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 else if (message[0]=="Returning"){
                     string book = message[1];
                     string lender = message[3];
-                    if(lender == clientData->getName()){
-                        string owner = clientData->getOwner(genre,book);
-                        if (owner == clientData->getName()){
-                            clientData->returnBooktoMe(genre,book);
+                    if(lender == clientData.getName()){
+                        string owner = clientData.getOwner(genre,book);
+                        if (owner == clientData.getName()){
+                            clientData.returnBooktoMe(genre,book);
                         } else{
                             string frame = "SEND" + newLine + "destination:" + genre + newLine + newLine+ "Returning " + book + " to" + "owner" + newLine + '\0';
                             //if succeed to send the frame, add the book to user's inventory
                             ch.sendLine(frame);
-                            clientData->removeBookInventory(genre, book);
+                            clientData.removeBookInventory(genre, book);
                         }
                     }
                 }
                 else if (message.size()>1 && message[1] == "status"){
-                    string status = clientData->genreStatus(genre);
+                    string status = clientData.genreStatus(genre);
                     string frame = "SEND" + newLine + "destination:" + genre+ newLine + newLine + status + newLine + '\0';
                     ch.sendLine(frame);
                 }
@@ -158,6 +157,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
             }
           headers.clear();
         }
+        terminate();
     }
 //    void run() {
 //        for (int i = 0; i < 100; i++) {
