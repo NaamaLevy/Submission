@@ -137,7 +137,17 @@ void ClientData::removeBookWL(string genre, string book) {
 }
 
 string ClientData::getOwner(string genre, string book) {
-    return (inventory.at(genre).at(make_pair(book,false)));
+    map <pair<string, bool>, string> innerMap = inventory.at(genre);
+    map <pair<string, bool>, string> :: iterator iterator;
+    for(iterator = innerMap.begin(); iterator != innerMap.end(); iterator++){
+        string currBook = ((iterator->first).first)+" ";
+        if(currBook== book ) {
+             string output = iterator-> second;
+            return output;
+        }
+    }
+    return "error";
+  //  return (inventory.at(genre).at(make_pair(book,false)));
 }
 
 void ClientData::returnBooktoMe(string genre, string book) {

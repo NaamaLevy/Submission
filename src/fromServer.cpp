@@ -154,7 +154,7 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                     }
 
 
-                    string lender = message[3];
+                    string lender = message[i+1];
                     if(lender == clientData.getName()){
                         string owner = clientData.getOwner(genre,book);
                         if (owner == clientData.getName()){
