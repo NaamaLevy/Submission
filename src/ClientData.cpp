@@ -8,23 +8,7 @@
 
 using namespace std;
 
-ClientData::ClientData(string userName, string password):userName(userName), password(password){
-    topicsID = map<string, int>();
-    inventory = map <string, map<pair<string, bool>, string>>();
-    wishList = map<string,vector<string>>();
-    receipts = map <int, string>();
-    connected = false;
-    receiptID = 0;
-}
-//map <string, int> topicsID; //map<genre, id>
-//map <string, map<pair<string, bool>, string>> inventory; //map<genre, map<<book, isAvailable>, owner>
-//map<string,vector<string>> wishList; //map<genre, vector<book i want>>
-//map <int, string> receipts; //map<receipt id, action> //map an action to act when getting a receipt with this id.
-//atomic_int subID; //produces unique id for every sub' genre
-//bool connected;
-//string userName;
-//string password;
-//atomic_int receiptID;
+ClientData::ClientData(string userName, string password):userName(userName), password(password), topicsID(map<string, int>()),inventory(map <string, map<pair<string, bool>, string>>()),wishList(map<string,vector<string>>()),receipts( map <int, string>()),connected(false),receiptID(0){}
 
 int ClientData::getSubID() {
     return subID++;
@@ -107,8 +91,7 @@ bool ClientData::checkBookInventory(string genre, string book) {
             return true;
         }
     }
-
-//    return ((inventory.at(genre)).count(make_pair(book,true))==1);
+    return false;
 }
 
 void ClientData::lendBook(string genre, string book) {

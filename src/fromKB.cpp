@@ -9,10 +9,9 @@
 using namespace std;
 
 
-fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
+fromKB::fromKB(ConnectionHandler &ch,  ClientData &clientData, bool isConnected):
         ch(ch),
-        isConnected(isConnected),
-        clientData(clientData){
+        clientData(clientData), isConnected(isConnected){
 }
 
 
@@ -59,7 +58,8 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 string genre = words[1];
                 int i = 2;
                 string book;
-                while (i<words.size()) {
+                int j = words.size();
+                while (i<j) {
                     book = book +  words[i] + " ";
                     i++;
                 }
@@ -76,7 +76,8 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 string genre = words[1];
                 int i = 2;
                 string book;
-                while (i<words.size()) {
+                int j = words.size();
+                while (i<j) {
                     book = book +  words[i] + " ";
                     i++;
                 }
@@ -94,7 +95,8 @@ fromKB::fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
                 string genre = words[1];
                 int i = 2;
                 string book;
-                while (i<words.size()) {
+                int j = words.size();
+                while (i<j) {
                     book = book +  words[i] + " ";
                     i++;
                 }

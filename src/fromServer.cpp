@@ -9,10 +9,9 @@
 
 using namespace std;
 
-fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clientData):
+fromServer::fromServer(ConnectionHandler &ch,  ClientData &clientData, bool isConnected):
         ch(ch),
-        isConnected(isConnected),
-        clientData(clientData){
+        clientData(clientData), isConnected(isConnected){
 }
 
     void fromServer::operator()() {
@@ -32,7 +31,8 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
         map<string, string> headers;
         string body;
         string header;
-        while (i<lines.size()-1){ //splits headers line to <key,value> map
+        int j= lines.size()-1;
+        while (i<j){ //splits headers line to <key,value> map
             while(head){
                 header = lines[i];
                 if (header==(""))
@@ -103,7 +103,8 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                 if (message.size()>3 && message[3]==("borrow")){
                     int i = 4;
                     string book;
-                    while (i<message.size()) {
+                    int j= message.size();
+                    while (i<j) {
                         book = book +  message[i] + " ";
                         i++;
                     }
@@ -122,7 +123,8 @@ fromServer::fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clie
                     string owner = message[0];
                     int i = 2;
                     string book;
-                    while (i<message.size()) {
+                    int j= message.size();
+                    while (i<j) {
                         if (message[i]!=""){
                             book = book +  message[i] + " ";
                         }

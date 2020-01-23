@@ -13,13 +13,13 @@ using namespace std;
 
 class fromKB {
 private:
-    int _id;
+
     ConnectionHandler& ch;
-    bool isConnected;
     ClientData &clientData;
+    bool isConnected;
 
 public:
-    fromKB(ConnectionHandler &ch, bool isConnected, ClientData &clientData);
+    fromKB(ConnectionHandler &ch, ClientData &clientData, bool isConnected);
 
     void run();
     void operator()();

@@ -15,14 +15,12 @@ using namespace std;
 
 class fromServer {
 private:
-    int _id;
-    bool disconnected;
-    ClientData& clientData;
     ConnectionHandler& ch;
+    ClientData &clientData;
     bool isConnected;
 
 public:
-    fromServer(ConnectionHandler &ch, bool isConnected, ClientData &clientData);
+    fromServer(ConnectionHandler &ch, ClientData &clientData, bool isConnected);
 
     void run();
 
