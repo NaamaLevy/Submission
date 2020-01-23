@@ -14,8 +14,7 @@ int main() {
         char buf[bufsize];
         cin.getline(buf, bufsize);
         string line(buf);
-  //       login 132.72.40.238:9999 naama 222
-  //        login 127.0.0.1:7777 naama 222
+
         if (line.substr(0, 5)==("login")) {
             size_t pos = 0;
             std::string token;
@@ -40,16 +39,19 @@ int main() {
     //create Connection handler with user's host and port
     ConnectionHandler connectionHandler(host, short(stoi(port)));
     connectionHandler.connect();
-//    clientData.setConnected(true);
+
 
     mutex mutex;
-    fromKB fromKb(connectionHandler, clientData, true);
     fromServer fromserver(connectionHandler, clientData, true);
-    thread th1(fromKb);
-    thread th2(fromserver);
     connectionHandler.sendLine(frame);
-    th1.join();
+
+    fromKB fromKb(connectionHandler, clientData, true);
+
+    thread th2(fromserver);
+    thread th1(fromKb);
+
     th2.join();
+    th1.join();
 
 
     return 0;
